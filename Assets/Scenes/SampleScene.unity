@@ -319,6 +319,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4368478763438932214, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5163173307904367441, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a91b0fea97d46ff43904d4f0ac18b64c,
+        type: 3}
     - target: {fileID: 5601268155540349432, guid: f1c411f85fdbd844384a4dafb40b773b,
         type: 3}
       propertyPath: m_Constraints
