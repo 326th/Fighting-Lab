@@ -12,7 +12,7 @@ public class DealDamage: MonoBehaviour
         if (collision.gameObject.layer == 11)
         {
             Test test = collision.GetComponentInParent<Test>();
-            test.Damage(Damage);
+            test.Damage(Damage,Hurt_force);
         }
     }
 }

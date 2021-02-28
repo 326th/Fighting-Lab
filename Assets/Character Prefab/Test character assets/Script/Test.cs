@@ -17,8 +17,7 @@ public class Test : MonoBehaviour
     [SerializeField] private float JUMP_VEL = 10f;
     [SerializeField] private bool busy = false; //during busy state (hit lag or hit stunt), player cannot move. this state is freed by animator
     //Game logic
-    private float padding = 1f;
-
+    private float PADDING = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,25 +29,40 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        if (!busy) 
+        {
+            Movement();
+        }
         AnimationState();
         anim.SetInteger("State", (int)state);
+        print(anim.GetInteger("State"));
     }
 
-    public void Damage(float damage)
+    public void Damage(float damage, float hurt_force)
     {
         print(damage);
     }
 
     private void AnimationState()
     {
-        if (Mathf.Abs(rb.velocity.y) >= 0.1f)
+        if (state == State.Jump)
         {
-            state = State.Go_Up;
+            return;
         }
-        else
+        if (state == State.Go_Up)
         {
-            state = State.Idle;
+            if(rb.velocity.y < 0.1f)
+            {
+                state = State.Go_Down;
+            }
+        }
+        if (state == State.Go_Down)
+        {
+            if (rb.velocity.y == 0f)
+            {
+                state = State.Idle;
+                busy = false;
+            }
         }
     }
     private void Movement()
@@ -70,10 +84,30 @@ public class Test : MonoBehaviour
         // jump
         if (Input.GetButtonDown("Jump"))
         {
-            RaycastHit2D hit = Physics2D.Raycast(col.bounds.center, Vector2.down, col.bounds.extents.y + padding, ground); // check if there is ground beneath
+            RaycastHit2D hit = Physics2D.Raycast(col.bounds.center, Vector2.down, col.bounds.extents.y + PADDING, ground); // check if there is ground beneath
             if (hit.collider != null) {
-                rb.velocity = new Vector2(rb.velocity.x, JUMP_VEL);
+                state = State.Jump;
+                busy = true;
+                rb.velocity = new Vector2(0, 0);
             }
         }
     }
+
+    private void Jump()
+    {
+        if (Input.GetKey("right"))
+        {
+            rb.velocity = new Vector2(SPEED,JUMP_VEL);
+        }
+        else if (Input.GetKey("left"))
+        {
+            rb.velocity = new Vector2(-1*SPEED, JUMP_VEL);
+        }
+        else
+        {
+            rb.velocity = new Vector2(0, JUMP_VEL);
+        }
+        state = State.Go_Up;
+    }
+
 }
