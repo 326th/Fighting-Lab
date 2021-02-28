@@ -319,9 +319,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1107633112113452143, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 4.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 1107633112113452143, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 6.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669820443607276283, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: SPEED
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237044290103405362, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: m_Mass
+      value: 0.0001
+      objectReference: {fileID: 0}
     - target: {fileID: 4368478763438932214, guid: f1c411f85fdbd844384a4dafb40b773b,
         type: 3}
       propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368478763438932214, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5163173307904367441, guid: f1c411f85fdbd844384a4dafb40b773b,
@@ -414,6 +439,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1669820443607276283, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: SPEED
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669820443607276283, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: JUMP_VEL
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669820443607276283, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5601268155540349432, guid: f1c411f85fdbd844384a4dafb40b773b,
         type: 3}
       propertyPath: m_Constraints
