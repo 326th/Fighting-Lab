@@ -15,53 +15,65 @@ public class Test : MonoBehaviour
     [SerializeField] private LayerMask ground;
     [SerializeField] private float SPEED = 5f;
     [SerializeField] private float JUMP_VEL = 10f;
-    [SerializeField] private bool busy = false; //during busy state (hit lag or hit stunt), player cannot move. this state is freed by animator
     //Game logic
     private float PADDING = 1f;
-    // Start is called before the first frame update
+    //ground checker
+    private RaycastHit2D ground_cast;
+    private bool is_grounded;
+    private bool input_lock = false; //during busy state (hit lag or hit stunt), player cannot move.
+    private bool state_lock = false; //for easier handling of state locking
+
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (!busy) 
+        CheckGround();
+        if (!input_lock) 
         {
             Movement();
         }
-        AnimationState();
+        if (!state_lock)
+        {
+            AnimationState();
+        }
         anim.SetInteger("State", (int)state);
         print(anim.GetInteger("State"));
     }
-
     public void Damage(float damage, float hurt_force)
     {
         print(damage);
     }
-
+    private void CheckGround()
+    {
+        ground_cast = Physics2D.Raycast(col.bounds.center, Vector2.down, col.bounds.extents.y + PADDING, ground); // check all ground layer collider beneath player
+        if (ground_cast.collider != null) { is_grounded = true; } else { is_grounded = false; }
+    }
     private void AnimationState()
     {
-        if (state == State.Jump)
-        {
-            return;
-        }
-        if (state == State.Go_Up)
-        {
-            if(rb.velocity.y < 0.1f)
-            {
-                state = State.Go_Down;
-            }
-        }
+        // air logic
+        if (!is_grounded) { AirStateLogic(); }
+        //grounded logic
+        else { GroundStateLogic(); }
+    }
+    private void AirStateLogic()
+    {
+        if (rb.velocity.y < 0.1f)
+         {
+            state = State.Go_Down;
+         }
+    }
+    private void GroundStateLogic()
+    {
         if (state == State.Go_Down)
         {
             if (rb.velocity.y == 0f)
             {
                 state = State.Idle;
-                busy = false;
+                input_lock = false;
             }
         }
     }
@@ -84,15 +96,14 @@ public class Test : MonoBehaviour
         // jump
         if (Input.GetButtonDown("Jump"))
         {
-            RaycastHit2D hit = Physics2D.Raycast(col.bounds.center, Vector2.down, col.bounds.extents.y + PADDING, ground); // check if there is ground beneath
-            if (hit.collider != null) {
+            if (is_grounded) {
                 state = State.Jump;
-                busy = true;
+                input_lock = true;
+                state_lock = true;
                 rb.velocity = new Vector2(0, 0);
             }
         }
     }
-
     private void Jump()
     {
         if (Input.GetKey("right"))
@@ -108,6 +119,7 @@ public class Test : MonoBehaviour
             rb.velocity = new Vector2(0, JUMP_VEL);
         }
         state = State.Go_Up;
+        state_lock = false;
     }
 
 }
