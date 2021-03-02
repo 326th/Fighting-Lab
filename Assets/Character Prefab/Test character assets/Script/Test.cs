@@ -6,6 +6,7 @@ public class Test : MonoBehaviour
 {
     //Finite States Machine
     private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Normal_Attack } // all states
+    private List<State> GroundState = new List<State> { State.Idle, State.Walk, State.Go_Down };
     private State state = State.Idle; // starting state
     //PLayer Components
     private Animator anim;
@@ -20,8 +21,9 @@ public class Test : MonoBehaviour
     //ground checker
     private RaycastHit2D ground_cast;
     private bool is_grounded;
-    private bool input_lock = false; //during busy state (hit lag or hit stunt), player cannot move.
-    private bool state_lock = false; //for easier handling of state locking
+    [SerializeField] bool input_lock = false; //during busy state (hit lag or hit stunt), player cannot move.
+    [SerializeField] bool state_lock = false; //for easier handling of state locking
+
 
     void Start()
     {
@@ -41,7 +43,7 @@ public class Test : MonoBehaviour
             AnimationState();
         }
         anim.SetInteger("State", (int)state);
-        print(anim.GetInteger("State"));
+        print(anim.GetInteger("State").ToString()  +  is_grounded.ToString() + rb.velocity.y.ToString());
     }
     public void Damage(float damage, float hurt_force)
     {
@@ -55,7 +57,7 @@ public class Test : MonoBehaviour
     private void AnimationState()
     {
         // air logic
-        if (!is_grounded) { AirStateLogic(); }
+        if (!GroundState.Contains(state)) { AirStateLogic(); }
         //grounded logic
         else { GroundStateLogic(); }
     }
@@ -70,10 +72,21 @@ public class Test : MonoBehaviour
     {
         if (state == State.Go_Down)
         {
-            if (rb.velocity.y == 0f)
+            if (is_grounded)
             {
                 state = State.Idle;
                 input_lock = false;
+            }
+        }
+        if (is_grounded)
+        {
+            if (Mathf.Abs(rb.velocity.x) > PADDING)
+            {
+                state = State.Walk;
+            }
+            else
+            {
+                state = State.Idle;
             }
         }
     }
