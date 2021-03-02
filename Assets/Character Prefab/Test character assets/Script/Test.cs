@@ -70,16 +70,13 @@ public class Test : MonoBehaviour
     }
     private void GroundStateLogic()
     {
-        if (state == State.Go_Down)
+        if (is_grounded)
         {
-            if (is_grounded)
+            if(state == State.Go_Down)
             {
                 state = State.Idle;
                 input_lock = false;
             }
-        }
-        if (is_grounded)
-        {
             if (Mathf.Abs(rb.velocity.x) > PADDING)
             {
                 state = State.Walk;
