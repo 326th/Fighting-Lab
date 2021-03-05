@@ -6,7 +6,10 @@ public class Test : MonoBehaviour
 {
     //Finite States Machine
     private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Normal_Attack } // all states
-    private List<State> GroundState = new List<State> { State.Idle, State.Walk, State.Go_Down };
+    private List<State> AirState = new List<State> { State.Go_Up };
+    private List<State> LandingState = new List<State> { State.Go_Down };
+    private List<State> GroundState = new List<State> { State.Idle, State.Walk};
+    
     private State state = State.Idle; // starting state
     //PLayer Components
     private Animator anim;
@@ -43,7 +46,6 @@ public class Test : MonoBehaviour
             AnimationState();
         }
         anim.SetInteger("State", (int)state);
-        print(anim.GetInteger("State").ToString()  +  is_grounded.ToString() + rb.velocity.y.ToString());
     }
     public void Damage(float damage, float hurt_force)
     {
@@ -57,9 +59,19 @@ public class Test : MonoBehaviour
     private void AnimationState()
     {
         // air logic
-        if (!GroundState.Contains(state)) { AirStateLogic(); }
-        //grounded logic
-        else { GroundStateLogic(); }
+        if (AirState.Contains(state)) { AirStateLogic(); }
+        // landing logic
+        if (LandingState.Contains(state)) { LandingStateLogic(); }
+        // grounded logic
+        if (GroundState.Contains(state)) { GroundStateLogic(); }
+    }
+    private void LandingStateLogic()
+    {
+        if (is_grounded)
+        {
+            state = State.Idle;
+            input_lock = false;
+        }
     }
     private void AirStateLogic()
     {
@@ -70,13 +82,6 @@ public class Test : MonoBehaviour
     }
     private void GroundStateLogic()
     {
-        if (is_grounded)
-        {
-            if(state == State.Go_Down)
-            {
-                state = State.Idle;
-                input_lock = false;
-            }
             if (Mathf.Abs(rb.velocity.x) > PADDING)
             {
                 state = State.Walk;
@@ -85,7 +90,6 @@ public class Test : MonoBehaviour
             {
                 state = State.Idle;
             }
-        }
     }
     private void Movement()
     {
