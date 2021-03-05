@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class CharacterLogic : MonoBehaviour
 {
+    //Input getter
+    public List<string> input_keys = new List<string>();
     //Finite States Machine
     private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Normal_Attack } // all states
-    private List<State> AirState = new List<State> { State.Go_Up };
-    private List<State> LandingState = new List<State> { State.Go_Down };
-    private List<State> GroundState = new List<State> { State.Idle, State.Walk};
+    private List<State> AIR_STATE = new List<State> { State.Go_Up };
+    private List<State> LANDING_STATE = new List<State> { State.Go_Down };
+    private List<State> GROUND_STATE = new List<State> { State.Idle, State.Walk};
     
     private State state = State.Idle; // starting state
     //PLayer Components
@@ -20,13 +22,12 @@ public class Test : MonoBehaviour
     [SerializeField] private float SPEED = 5f;
     [SerializeField] private float JUMP_VEL = 10f;
     //Game logic
-    private float PADDING = 1f;
+    private float PADDING = 0.05f;
     //ground checker
     private RaycastHit2D ground_cast;
     private bool is_grounded;
     [SerializeField] bool input_lock = false; //during busy state (hit lag or hit stunt), player cannot move.
     [SerializeField] bool state_lock = false; //for easier handling of state locking
-
 
     void Start()
     {
@@ -59,11 +60,11 @@ public class Test : MonoBehaviour
     private void AnimationState()
     {
         // air logic
-        if (AirState.Contains(state)) { AirStateLogic(); }
+        if (AIR_STATE.Contains(state)) { AirStateLogic(); }
         // landing logic
-        if (LandingState.Contains(state)) { LandingStateLogic(); }
+        if (LANDING_STATE.Contains(state)) { LandingStateLogic(); }
         // grounded logic
-        if (GroundState.Contains(state)) { GroundStateLogic(); }
+        if (GROUND_STATE.Contains(state)) { GroundStateLogic(); }
     }
     private void LandingStateLogic()
     {
@@ -94,12 +95,12 @@ public class Test : MonoBehaviour
     private void Movement()
     {
         // go left
-        if (Input.GetKey("left")) //using left right to make the character stop immediately, horizontal axis > 0.9 can be consider
+        if (input_keys.Contains("left")) //using left right to make the character stop immediately, horizontal axis > 0.9 can be consider
         {
             rb.velocity = new Vector2(-1 * SPEED, rb.velocity.y);
         }
         // go right
-        else if (Input.GetKey("right"))
+        else if (input_keys.Contains("right"))
         {
             rb.velocity = new Vector2(SPEED, rb.velocity.y);
         }
@@ -108,7 +109,7 @@ public class Test : MonoBehaviour
             rb.velocity = new Vector2(0, rb.velocity.y); // to stop character on release
         }
         // jump
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButton("Jump"))
         {
             if (is_grounded) {
                 state = State.Jump;
@@ -120,11 +121,11 @@ public class Test : MonoBehaviour
     }
     private void Jump()
     {
-        if (Input.GetKey("right"))
+        if (input_keys.Contains("right"))
         {
             rb.velocity = new Vector2(SPEED,JUMP_VEL);
         }
-        else if (Input.GetKey("left"))
+        else if (input_keys.Contains("left"))
         {
             rb.velocity = new Vector2(-1*SPEED, JUMP_VEL);
         }
