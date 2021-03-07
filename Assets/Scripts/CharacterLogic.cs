@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterLogic : MonoBehaviour
 {
     //Input getter
-    public List<string> input_keys = new List<string>();
+    public List<string> inputs = new List<string>();
     //Finite States Machine
     private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Normal_Attack } // all states
     private List<State> AIR_STATE = new List<State> { State.Go_Up };
@@ -41,12 +41,26 @@ public class CharacterLogic : MonoBehaviour
         if (!input_lock) 
         {
             Movement();
+            if (inputs.Contains("Fire1"))
+            {
+                AtaackLogic();
+            }
         }
         if (!state_lock)
         {
             AnimationState();
         }
         anim.SetInteger("State", (int)state);
+    }
+    private void ReturnToIdle()
+    {
+        state = State.Idle;
+        input_lock = false;
+    }
+    private void AtaackLogic()
+    {
+        state = State.Normal_Attack;
+        //input_lock = true;
     }
     public void Damage(float damage, float hurt_force)
     {
@@ -70,8 +84,7 @@ public class CharacterLogic : MonoBehaviour
     {
         if (is_grounded)
         {
-            state = State.Idle;
-            input_lock = false;
+            ReturnToIdle();
         }
     }
     private void AirStateLogic()
@@ -83,24 +96,24 @@ public class CharacterLogic : MonoBehaviour
     }
     private void GroundStateLogic()
     {
-            if (Mathf.Abs(rb.velocity.x) > PADDING)
-            {
-                state = State.Walk;
-            }
-            else
-            {
-                state = State.Idle;
-            }
+        if (Mathf.Abs(rb.velocity.x) > PADDING)
+        {
+            state = State.Walk;
+        }
+        else
+        {
+            state = State.Idle;
+        }
     }
     private void Movement()
     {
         // go left
-        if (input_keys.Contains("left")) //using left right to make the character stop immediately, horizontal axis > 0.9 can be consider
+        if (inputs.Contains("left")) //using left right to make the character stop immediately, horizontal axis > 0.9 can be consider
         {
             rb.velocity = new Vector2(-1 * SPEED, rb.velocity.y);
         }
         // go right
-        else if (input_keys.Contains("right"))
+        else if (inputs.Contains("right"))
         {
             rb.velocity = new Vector2(SPEED, rb.velocity.y);
         }
@@ -109,7 +122,7 @@ public class CharacterLogic : MonoBehaviour
             rb.velocity = new Vector2(0, rb.velocity.y); // to stop character on release
         }
         // jump
-        if (Input.GetButton("Jump"))
+        if (inputs.Contains("Jump"))
         {
             if (is_grounded) {
                 state = State.Jump;
@@ -121,11 +134,11 @@ public class CharacterLogic : MonoBehaviour
     }
     private void Jump()
     {
-        if (input_keys.Contains("right"))
+        if (inputs.Contains("right"))
         {
             rb.velocity = new Vector2(SPEED,JUMP_VEL);
         }
-        else if (input_keys.Contains("left"))
+        else if (inputs.Contains("left"))
         {
             rb.velocity = new Vector2(-1*SPEED, JUMP_VEL);
         }

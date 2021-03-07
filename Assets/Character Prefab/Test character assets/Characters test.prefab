@@ -70,8 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f48b35a1a10124181d8f5cc011a599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 5
-  Hurt_force: 10
+  DAMAGE: 5
+  HURT_FORCE: 10
 --- !u!1 &6274167552705757536
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +176,7 @@ Animator:
   m_GameObject: {fileID: 7660386093819386911}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 468bd663e6505304ea0d591baf80e7a2, type: 2}
+  m_Controller: {fileID: 9100000, guid: b339619e4b89cf144aaca522dd02584f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -268,12 +268,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd2e1ecfe339ad949af8ee0e8c6bc4b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  input_keys: []
   ground:
     serializedVersion: 2
     m_Bits: 512
   SPEED: 100
   JUMP_VEL: 15
-  busy: 0
+  input_lock: 0
+  state_lock: 0
 --- !u!61 &5399766806247317535
 BoxCollider2D:
   m_ObjectHideFlags: 0
