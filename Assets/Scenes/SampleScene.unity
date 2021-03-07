@@ -508,9 +508,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca981fa1559def74f9f76dd76c130b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collect_inputKey:
+  collect_input_key:
   - left
   - right
+  collect_input_button:
+  - Jump
+  - Fire1
   player_control:
   - {fileID: 881016913}
 --- !u!1001 &1963765178
