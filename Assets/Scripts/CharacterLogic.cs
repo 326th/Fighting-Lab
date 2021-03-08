@@ -28,6 +28,7 @@ public class CharacterLogic : MonoBehaviour
     private bool is_grounded;
     [SerializeField] bool input_lock = false; //during busy state (hit lag or hit stunt), player cannot move.
     [SerializeField] bool state_lock = false; //for easier handling of state locking
+    [SerializeField] bool ready = false; // automatically unlocks after 1 frame, 
 
     void Start()
     {
@@ -38,7 +39,13 @@ public class CharacterLogic : MonoBehaviour
     void Update()
     {
         CheckGround();
-        if (!input_lock) 
+        if (ready)
+        {
+            ready = false;
+            anim.SetInteger("State", (int)state);
+            return;
+        }
+        if (!input_lock)
         {
             Movement();
             if (inputs.Contains("Fire1"))
@@ -56,11 +63,15 @@ public class CharacterLogic : MonoBehaviour
     {
         state = State.Idle;
         input_lock = false;
+        state_lock = false;
+        ready = true;
     }
     private void AtaackLogic()
     {
+        rb.velocity = new Vector2(0, rb.velocity.y);
         state = State.Normal_Attack;
-        //input_lock = true;
+        input_lock = true;
+        state_lock = true;
     }
     public void Damage(float damage, float hurt_force)
     {
