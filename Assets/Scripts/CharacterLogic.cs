@@ -21,14 +21,19 @@ public class CharacterLogic : MonoBehaviour
     [SerializeField] private LayerMask ground;
     [SerializeField] private float SPEED = 5f;
     [SerializeField] private float JUMP_VEL = 10f;
-    //Game logic
+    //Game logic constant
     private float PADDING = 0.05f;
+    [SerializeField] private float DELTATIME_ACC = 5f; // howmuch you want delta time to scale
     //ground checker
     private RaycastHit2D ground_cast;
     private bool is_grounded;
-    [SerializeField] bool input_lock = false; //during busy state (hit lag or hit stunt), player cannot move.
-    [SerializeField] bool state_lock = false; //for easier handling of state locking
-    [SerializeField] bool ready = false; // automatically unlocks after 1 frame, 
+    //Game logic variables
+    private bool input_lock = false; //during busy state (hit lag or hit stunt), player cannot move.
+    private bool state_lock = false; //for easier handling of state locking
+    private bool ready = false; // automatically unlocks after 1 frame, 
+    [SerializeField] private float hit_stun = 0;
+    [SerializeField] private float hp = 100;
+
 
     void Start()
     {
@@ -39,13 +44,27 @@ public class CharacterLogic : MonoBehaviour
     void Update()
     {
         CheckGround();
+        // ready logic (wait a frame for animator to catch up)
         if (ready)
         {
             ready = false;
             anim.SetInteger("State", (int)state);
+            anim.SetBool("Hit Stunt", false);
             return;
         }
-        if (!input_lock)
+        // Hitstun waiter;
+        if (hit_stun> 0)
+        {
+            hit_stun -= 1 * Time.deltaTime * DELTATIME_ACC;
+            anim.SetBool("Hit Stunt", true);
+            if (hit_stun <= 0)
+            {
+                ready = true;
+            }
+            return;
+        }
+        // movemnet and attack
+        if (!input_lock) 
         {
             Movement();
             if (inputs.Contains("Fire1"))
@@ -53,6 +72,7 @@ public class CharacterLogic : MonoBehaviour
                 AtaackLogic();
             }
         }
+        // animation state logic
         if (!state_lock)
         {
             AnimationState();
@@ -73,9 +93,10 @@ public class CharacterLogic : MonoBehaviour
         input_lock = true;
         state_lock = true;
     }
-    public void Damage(float damage, float hurt_force)
+    public void Damage(float damage, float hurt_force, int hit_stun, float force_angle)
     {
-        print(damage);
+        hp -= damage;
+        this.hit_stun = hit_stun;
     }
     private void CheckGround()
     {
