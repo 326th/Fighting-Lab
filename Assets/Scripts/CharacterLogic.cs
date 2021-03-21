@@ -41,7 +41,7 @@ public class CharacterLogic : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
     }
-    void Update()
+    void FixedUpdate()
     {
         CheckGround();
         // ready logic (wait a frame for animator to catch up)
@@ -69,7 +69,7 @@ public class CharacterLogic : MonoBehaviour
             Movement();
             if (inputs.Contains("Fire1"))
             {
-                AtaackLogic();
+                AtackLogic();
             }
         }
         // animation state logic
@@ -86,7 +86,7 @@ public class CharacterLogic : MonoBehaviour
         state_lock = false;
         ready = true;
     }
-    private void AtaackLogic()
+    private void AtackLogic()
     {
         rb.velocity = new Vector2(0, rb.velocity.y);
         state = State.Normal_Attack;
