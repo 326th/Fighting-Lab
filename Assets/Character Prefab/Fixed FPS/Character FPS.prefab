@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3070186210680070015}
   - component: {fileID: 824410577670866667}
   m_Layer: 8
-  m_Name: Character Test
+  m_Name: Character FPS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,6 +164,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a58eb6239ca39d4dbc5c4631263b707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputhandler: {fileID: 0}
+  ground:
+    serializedVersion: 2
+    m_Bits: 0
+  hurt_box:
+    serializedVersion: 2
+    m_Bits: 0
+  SPEED: 5
+  JUMP_VEL: 10
 --- !u!1 &3992159041542258176
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 497807980485218423}
   - component: {fileID: 2100199346994288841}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: HurtBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
