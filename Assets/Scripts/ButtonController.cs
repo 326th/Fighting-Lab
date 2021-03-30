@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ButtonController : MonoBehaviour
 {
@@ -21,5 +22,8 @@ public class ButtonController : MonoBehaviour
         button.image.rectTransform.sizeDelta = new Vector3(X, Y);
         //button.Text.fontSize = TextSize;
     }
-
+    public void LoadScene(string scenceName)
+    {
+        SceneManager.LoadScene(scenceName);
+    }
 }
