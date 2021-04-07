@@ -155,8 +155,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 824410577670866667, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
+      propertyPath: hitbox.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 824410577670866667, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
+        type: 3}
       propertyPath: hurtBox.m_Bits
-      value: 0
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 2125514461184767870, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
@@ -212,6 +217,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3992159041542258176, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
+        type: 3}
+      propertyPath: m_Name
+      value: HurtBox Move
       objectReference: {fileID: 0}
     - target: {fileID: 3992159041542258176, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
@@ -510,7 +520,7 @@ PrefabInstance:
     - target: {fileID: 2125514461184767870, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2125514461184767870, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
@@ -566,6 +576,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3992159041542258176, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
+        type: 3}
+      propertyPath: m_Name
+      value: HurtBox Idle
       objectReference: {fileID: 0}
     - target: {fileID: 3992159041542258176, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}

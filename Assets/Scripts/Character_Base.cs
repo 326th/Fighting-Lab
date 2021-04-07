@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,13 +9,14 @@ public class Character_Base : MonoBehaviour
     //Input getter
     [SerializeField] private InputHandler inputhandler;
     [SerializeField] private Dictionary<string, int> inputsThisFrame = new Dictionary<string, int>();
-    //Finite States Machine for animation
-    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Normal_Attack } // all states
-    private State state = State.Idle; // starting state
     //PLayer Components
     private Animator anim;
     private Rigidbody2D rb;
     private Collider2D col;
+    //Finite States Machine for animation
+    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Attack_Neutral, Damaged } // all states
+    private State state = State.Idle; // starting state
+    private bool stateGotChanged = false; // to prevent multiple trigger
     //Inspector variable
     [SerializeField] private LayerMask ground;
     [SerializeField] private LayerMask hurtBox;
@@ -30,6 +32,7 @@ public class Character_Base : MonoBehaviour
     private int currentActionFrame = -1;
     // logic action constant
     private Dictionary<string, Action> ACTION_DICT = new Dictionary<string, Action>();
+    private Dictionary<Action, string> REVERSE_ACTION_DICT = new Dictionary<Action, string>();
     // hit stunt variable
     private int currentHitStuntFrame = -1;
 
@@ -43,7 +46,9 @@ public class Character_Base : MonoBehaviour
         private float m_angle;
         private float m_damage;
         private int m_hitStunt;
-        public Attack(int startingFrame, int endingFrame, Vector2 point, Vector2 size, float angle, float damage, int hitStunt)
+        private LayerMask m_mask;
+        
+        public Attack(int startingFrame, int endingFrame, Vector2 point, Vector2 size, float angle, float damage, int hitStunt, string layerMask)
         {
             m_startingFrame = startingFrame;
             m_endingFrame = endingFrame;
@@ -52,22 +57,23 @@ public class Character_Base : MonoBehaviour
             m_angle = angle;
             m_damage = damage;
             m_hitStunt = hitStunt;
-        }
-        public Collider2D[] SearchAttack(Vector2 position)
-        {
-            return Physics2D.OverlapBoxAll(point: m_point + position, size: m_size, angle: m_angle);
+            m_mask = LayerMask.GetMask(layerMask);
         }
         public bool IsActive(int currentFrame)
         {
             return m_startingFrame <= currentFrame && currentFrame <= m_endingFrame;
         }
-        public float GetDamage()
+        public void DealDamage(Rigidbody2D rb, Character_Base thisCharacterBase)
         {
-            return m_damage;
-        }
-        public int GetHitStunt()
-        {
-            return m_hitStunt;
+            Collider2D[] DetectedHitboxes = Physics2D.OverlapBoxAll(point: m_point + rb.position, size: m_size, angle: m_angle, layerMask: m_mask);
+            foreach (Collider2D detectedHitBox in DetectedHitboxes)
+            {
+                Character_Base detectedCharacter = detectedHitBox.GetComponentInParent<Character_Base>();
+                if (detectedCharacter != thisCharacterBase)
+                {
+                   detectedCharacter.TakeDamage(m_damage, m_hitStunt);
+                }
+            }
         }
     }
     private class Movement
@@ -88,6 +94,10 @@ public class Character_Base : MonoBehaviour
             rb.velocity = m_force;
         }
     }
+    private class InputReading
+    {
+
+    }
     private class Action
     {
         private List<Attack> m_attacks;
@@ -105,18 +115,7 @@ public class Character_Base : MonoBehaviour
             {
                 if (attack.IsActive(currentFrame))
                 {
-                    Collider2D[] hitboxesDetected = attack.SearchAttack(rb.position);
-                    foreach ( Collider2D hitboxConfirmed in hitboxesDetected)
-                    {
-                        if (hitboxConfirmed.gameObject.layer == 10)
-                        {
-                            Character_Base detectedCharacter = hitboxConfirmed.GetComponentInParent<Character_Base>();
-                            if (detectedCharacter != thisCharacterBase)
-                            {
-                                detectedCharacter.TakeDamage(attack.GetDamage(), attack.GetHitStunt());
-                            }
-                        }
-                    }
+                    attack.DealDamage(rb, thisCharacterBase);
                 }
             }
             foreach(Movement movement in m_movements)
@@ -139,13 +138,13 @@ public class Character_Base : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        inputsThisFrame = inputhandler.GetInputs();
         if (currentHitStuntFrame >= 0)
         {
             print(currentHitStuntFrame);
             currentHitStuntFrame--;
         }
         // Logic that requires inputs
-        inputsThisFrame = inputhandler.GetInputs();
         if (currentActionFrame >= 0)
         {
             ActionLoading();
@@ -156,6 +155,7 @@ public class Character_Base : MonoBehaviour
         {
             GroundOption();
         }
+        SetAnimation();
     }
     private void GroundOption()
     {   
@@ -195,7 +195,7 @@ public class Character_Base : MonoBehaviour
     {
         if (inputsThisFrame["Attack1"] % 2 == 1) // check for state 1 and 3 (newly pressed)
         {
-            action = ACTION_DICT["Attack_Netural"];
+            action = ACTION_DICT["Attack_Neutral"];
             currentActionFrame = 0;
             rb.velocity = new Vector2(0, 0);
         }
@@ -228,9 +228,71 @@ public class Character_Base : MonoBehaviour
         movement_list.Add(new Movement(9, new Vector2(0, JUMP_VEL)));
         Action jump = new Action(new List<Attack>(), movement_list, 9);
         ACTION_DICT.Add("Jump", jump);
+        REVERSE_ACTION_DICT.Add(jump, "Jump");
         List<Attack> attack_list = new List<Attack>();
-        attack_list.Add(new Attack(9, 9, new Vector2(0, 0), new Vector2(10, 10), 0, 5, 9));
+        attack_list.Add(new Attack(9, 9, new Vector2(0, 0), new Vector2(10, 10), 0, 8, 9, "HurtBox"));
         Action attack = new Action(attack_list, new List<Movement>(), 9);
-        ACTION_DICT.Add("Attack_Netural", attack);
+        ACTION_DICT.Add("Attack_Neutral", attack);
+        REVERSE_ACTION_DICT.Add(attack, "Attack_Neutral");
+    }
+    private void SetAnimation()
+    {
+        StateAnimationLogic();
+        SetTrigger();
+    }
+
+    private void StateAnimationLogic()
+    {
+        if (currentHitStuntFrame >= 0)
+        {
+            stateGotChanged = ChangeAnimationState(State.Damaged);
+            return;
+        }
+        if (action != null)
+        {
+            state = (State)Enum.Parse(typeof(State), REVERSE_ACTION_DICT[action]);
+            stateGotChanged = true;
+            return;
+        }
+        if (isGrounded)
+        {
+            if (rb.velocity.x == 0)
+            {
+                stateGotChanged = ChangeAnimationState(State.Idle);
+            }
+            else
+            {
+                stateGotChanged = ChangeAnimationState(State.Walk);
+            }
+        }
+        else
+        {
+            if (rb.velocity.y >= 0)
+            {
+                stateGotChanged = ChangeAnimationState(State.Go_Up);
+            }
+            else
+            {
+                stateGotChanged = ChangeAnimationState(State.Go_Down);
+            }
+        }
+        
+    }
+
+    private bool ChangeAnimationState(State animationState)
+    {
+        if (state != animationState)
+        {
+            state = animationState;
+            return true;
+        }
+        return false;
+    }
+    private void SetTrigger()
+    {
+        if (stateGotChanged)
+        {
+            anim.SetTrigger(state.ToString());
+        }
     }
 }
