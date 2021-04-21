@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character_Base : MonoBehaviour
+public class Character_Base : ClassScript
 {
     [SerializeField] private float hitPoints = 100;
     //Input getter
@@ -21,7 +21,6 @@ public class Character_Base : MonoBehaviour
     [SerializeField] private LayerMask ground;
     [SerializeField] private LayerMask hurtBox;
     [SerializeField] private float SPEED = 5f;
-    [SerializeField] private float JUMP_VEL = 10f;
     //Game logic constant
     private float PADDING = 0.05f;
     //ground checker
@@ -31,130 +30,42 @@ public class Character_Base : MonoBehaviour
     private Action action = null;
     private int currentActionFrame = -1;
     // logic action constant
+    private ActionLoader actionLoader;
     private Dictionary<string, Action> ACTION_DICT = new Dictionary<string, Action>();
     private Dictionary<Action, string> REVERSE_ACTION_DICT = new Dictionary<Action, string>();
     // hit stunt variable
     private int currentHitStuntFrame = -1;
-
-    // following classes are for action logic
-    private class Attack
-    {
-        private int m_startingFrame;
-        private int m_endingFrame;
-        private Vector2 m_point;
-        private Vector2 m_size;
-        private float m_angle;
-        private float m_damage;
-        private int m_hitStunt;
-        private LayerMask m_mask;
-        
-        public Attack(int startingFrame, int endingFrame, Vector2 point, Vector2 size, float angle, float damage, int hitStunt, string layerMask)
-        {
-            m_startingFrame = startingFrame;
-            m_endingFrame = endingFrame;
-            m_point = point;
-            m_size = size;
-            m_angle = angle;
-            m_damage = damage;
-            m_hitStunt = hitStunt;
-            m_mask = LayerMask.GetMask(layerMask);
-        }
-        public bool IsActive(int currentFrame)
-        {
-            return m_startingFrame <= currentFrame && currentFrame <= m_endingFrame;
-        }
-        public void DealDamage(Rigidbody2D rb, Character_Base thisCharacterBase)
-        {
-            Collider2D[] DetectedHitboxes = Physics2D.OverlapBoxAll(point: m_point + rb.position, size: m_size, angle: m_angle, layerMask: m_mask);
-            foreach (Collider2D detectedHitBox in DetectedHitboxes)
-            {
-                Character_Base detectedCharacter = detectedHitBox.GetComponentInParent<Character_Base>();
-                if (detectedCharacter != thisCharacterBase)
-                {
-                   detectedCharacter.TakeDamage(m_damage, m_hitStunt);
-                }
-            }
-        }
-    }
-    private class Movement
-    {
-        private int m_startingFrame;
-        private Vector2 m_force;
-        public Movement(int startingFrame, Vector2 force)
-        {
-            this.m_startingFrame = startingFrame;
-            this.m_force = force;
-        }
-        public bool IsActive(int currentFrame)
-        {
-            return m_startingFrame == currentFrame;
-        }
-        public void Move(Rigidbody2D rb)
-        {
-            rb.velocity = m_force;
-        }
-    }
-    private class InputReading
-    {
-
-    }
-    private class Action
-    {
-        private List<Attack> m_attacks;
-        private List<Movement> m_movements;
-        private int m_lastFrame;
-        public Action (List<Attack> attacks, List<Movement> movements,int lastFrame)
-        {
-            m_attacks = attacks;
-            m_movements = movements;
-            m_lastFrame = lastFrame;
-        }
-        public bool NextStep(int currentFrame,Rigidbody2D rb, Character_Base thisCharacterBase)
-        {
-            foreach(Attack attack in m_attacks)
-            {
-                if (attack.IsActive(currentFrame))
-                {
-                    attack.DealDamage(rb, thisCharacterBase);
-                }
-            }
-            foreach(Movement movement in m_movements)
-            {
-                if (movement.IsActive(currentFrame))
-                {
-                    movement.Move(rb);
-                }
-            }
-            return currentFrame < m_lastFrame;
-        }
-    }
 
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
-        SetUpDictionary();
+        actionLoader = GetComponent<ActionLoader>();
+        ACTION_DICT = actionLoader.GetDictionary();
+        REVERSE_ACTION_DICT = actionLoader.GetReverseDictionary();
     }
     private void FixedUpdate()
     {
         inputsThisFrame = inputhandler.GetInputs();
-        if (currentHitStuntFrame >= 0)
-        {
-            print(currentHitStuntFrame);
-            currentHitStuntFrame--;
-        }
-        // Logic that requires inputs
         if (currentActionFrame >= 0)
         {
             ActionLoading();
             return;
         }
-        CheckGround();
-        if (isGrounded)
+        if (currentHitStuntFrame >= 0)
         {
-            GroundOption();
+            currentHitStuntFrame--;
         }
+        else
+        {
+            CheckGround();
+            if (isGrounded)
+            {
+                GroundOption();
+            }
+        }
+        // Logic that requires inputs
         SetAnimation();
     }
     private void GroundOption()
@@ -222,25 +133,11 @@ public class Character_Base : MonoBehaviour
         currentHitStuntFrame = hitStunt;
         hitPoints -= damage;
     }
-    private void SetUpDictionary()
-    {
-        List<Movement> movement_list = new List<Movement>();
-        movement_list.Add(new Movement(9, new Vector2(0, JUMP_VEL)));
-        Action jump = new Action(new List<Attack>(), movement_list, 9);
-        ACTION_DICT.Add("Jump", jump);
-        REVERSE_ACTION_DICT.Add(jump, "Jump");
-        List<Attack> attack_list = new List<Attack>();
-        attack_list.Add(new Attack(9, 9, new Vector2(0, 0), new Vector2(10, 10), 0, 8, 9, "HurtBox"));
-        Action attack = new Action(attack_list, new List<Movement>(), 9);
-        ACTION_DICT.Add("Attack_Neutral", attack);
-        REVERSE_ACTION_DICT.Add(attack, "Attack_Neutral");
-    }
     private void SetAnimation()
     {
         StateAnimationLogic();
         SetTrigger();
     }
-
     private void StateAnimationLogic()
     {
         if (currentHitStuntFrame >= 0)
@@ -278,7 +175,6 @@ public class Character_Base : MonoBehaviour
         }
         
     }
-
     private bool ChangeAnimationState(State animationState)
     {
         if (state != animationState)
