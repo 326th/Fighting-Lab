@@ -10,8 +10,8 @@ public class CharacterLogic : MonoBehaviour
     private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Normal_Attack } // all states
     private List<State> AIR_STATE = new List<State> { State.Go_Up };
     private List<State> LANDING_STATE = new List<State> { State.Go_Down };
-    private List<State> GROUND_STATE = new List<State> { State.Idle, State.Walk};
-    
+    private List<State> GROUND_STATE = new List<State> { State.Idle, State.Walk };
+
     private State state = State.Idle; // starting state
     //PLayer Components
     private Animator anim;
@@ -33,7 +33,8 @@ public class CharacterLogic : MonoBehaviour
     private bool ready = false; // automatically unlocks after 1 frame, 
     [SerializeField] private float hit_stun = 0;
     [SerializeField] private float hp = 100;
-
+    private bool facing_right;
+    public CharacterLogic other;
 
     void Start()
     {
@@ -44,6 +45,8 @@ public class CharacterLogic : MonoBehaviour
     void Update()
     {
         CheckGround();
+        CheckFacing();
+
         // ready logic (wait a frame for animator to catch up)
         if (ready)
         {
@@ -53,7 +56,7 @@ public class CharacterLogic : MonoBehaviour
             return;
         }
         // Hitstun waiter;
-        if (hit_stun> 0)
+        if (hit_stun > 0)
         {
             hit_stun -= 1 * Time.deltaTime * DELTATIME_ACC;
             anim.SetBool("Hit Stunt", true);
@@ -64,7 +67,7 @@ public class CharacterLogic : MonoBehaviour
             return;
         }
         // movemnet and attack
-        if (!input_lock) 
+        if (!input_lock)
         {
             Movement();
             if (inputs.Contains("Fire1"))
@@ -103,6 +106,17 @@ public class CharacterLogic : MonoBehaviour
         ground_cast = Physics2D.Raycast(col.bounds.center, Vector2.down, col.bounds.extents.y + PADDING, ground); // check all ground layer collider beneath player
         if (ground_cast.collider != null) { is_grounded = true; } else { is_grounded = false; }
     }
+    private void CheckFacing()
+    {
+        if (this.transform.position.x < other.transform.position.x)
+        {
+            this.facing_right = true;
+        }
+        else
+        {
+            this.facing_right = false;
+        }
+    }
     private void AnimationState()
     {
         // air logic
@@ -122,9 +136,9 @@ public class CharacterLogic : MonoBehaviour
     private void AirStateLogic()
     {
         if (rb.velocity.y < 0.1f)
-         {
+        {
             state = State.Go_Down;
-         }
+        }
     }
     private void GroundStateLogic()
     {
@@ -156,7 +170,8 @@ public class CharacterLogic : MonoBehaviour
         // jump
         if (inputs.Contains("Jump"))
         {
-            if (is_grounded) {
+            if (is_grounded)
+            {
                 state = State.Jump;
                 input_lock = true;
                 state_lock = true;
@@ -168,11 +183,11 @@ public class CharacterLogic : MonoBehaviour
     {
         if (inputs.Contains("right"))
         {
-            rb.velocity = new Vector2(SPEED,JUMP_VEL);
+            rb.velocity = new Vector2(SPEED, JUMP_VEL);
         }
         else if (inputs.Contains("left"))
         {
-            rb.velocity = new Vector2(-1*SPEED, JUMP_VEL);
+            rb.velocity = new Vector2(-1 * SPEED, JUMP_VEL);
         }
         else
         {
@@ -181,5 +196,4 @@ public class CharacterLogic : MonoBehaviour
         state = State.Go_Up;
         state_lock = false;
     }
-
 }
