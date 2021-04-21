@@ -46,6 +46,10 @@ public class CharacterLogic : MonoBehaviour
     {
         CheckGround();
         CheckFacing();
+        if(this.name == "Character Test")
+        {
+            print("State: " + state);
+        }
 
         // ready logic (wait a frame for animator to catch up)
         if (ready)
@@ -195,5 +199,20 @@ public class CharacterLogic : MonoBehaviour
         }
         state = State.Go_Up;
         state_lock = false;
+    }
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        print(collision.gameObject.name);
+        if (state == State.Go_Down)
+        {
+            if (facing_right)
+            {
+                rb.AddForce(new Vector2(-0.0012f, 0));
+            }
+            else
+            {
+                rb.AddForce(new Vector2(0.0012f, 0));
+            }
+        }
     }
 }
