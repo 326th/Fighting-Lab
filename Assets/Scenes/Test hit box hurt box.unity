@@ -211,6 +211,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1669820443607276283, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: ground.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 7660386093819386911, guid: f1c411f85fdbd844384a4dafb40b773b,
         type: 3}
       propertyPath: m_Name
@@ -290,6 +295,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1669820443607276283, guid: f1c411f85fdbd844384a4dafb40b773b,
+        type: 3}
+      propertyPath: ground.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 6274167552705757536, guid: f1c411f85fdbd844384a4dafb40b773b,
         type: 3}
       propertyPath: m_Layer
@@ -421,6 +431,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f48b35a1a10124181d8f5cc011a599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DAMAGE: 0
+  HURT_FORCE: 0
+  HIT_STUN: 0
+  FORCE_ANGLE: 0
 --- !u!61 &564951456
 BoxCollider2D:
   m_ObjectHideFlags: 0

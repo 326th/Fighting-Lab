@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6537445517826692178}
   - component: {fileID: 3070186210680070015}
   - component: {fileID: 824410577670866667}
+  - component: {fileID: 4093106345311035297}
   m_Layer: 8
   m_Name: Character FPS
   m_TagString: Untagged
@@ -164,15 +165,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a58eb6239ca39d4dbc5c4631263b707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputhandler: {fileID: 0}
+  hitPoints: 100
+  facingController: {fileID: 0}
+  inputHandler: {fileID: 0}
   ground:
     serializedVersion: 2
-    m_Bits: 0
-  hurt_box:
+    m_Bits: 512
+  hurtBox:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   SPEED: 5
-  JUMP_VEL: 10
+--- !u!114 &4093106345311035297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737330068140860287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caba1e996965f554e829f25396f3652d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3992159041542258176
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +198,7 @@ GameObject:
   - component: {fileID: 497807980485218423}
   - component: {fileID: 2100199346994288841}
   m_Layer: 10
-  m_Name: HurtBox
+  m_Name: HurtBox Move
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

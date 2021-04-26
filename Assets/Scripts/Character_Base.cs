@@ -6,15 +6,18 @@ using UnityEngine;
 public class Character_Base : ClassScript
 {
     [SerializeField] private float hitPoints = 100;
+    //Facing Handler
+    [SerializeField] private FacingController facingController;
+    private bool facingRightLastFrame = false;
     //Input getter
-    [SerializeField] private InputHandler inputhandler;
-    [SerializeField] private Dictionary<string, int> inputsThisFrame = new Dictionary<string, int>();
+    [SerializeField] private InputHandler inputHandler;
+    private Dictionary<string, int> inputsThisFrame = new Dictionary<string, int>();
     //PLayer Components
     private Animator anim;
     private Rigidbody2D rb;
     private Collider2D col;
     //Finite States Machine for animation
-    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Attack_Neutral, Damaged } // all states
+    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Damaged, Attack_Neutral, Attack_Forward } // all states
     private State state = State.Idle; // starting state
     private bool stateGotChanged = false; // to prevent multiple trigger
     //Inspector variable
@@ -31,23 +34,40 @@ public class Character_Base : ClassScript
     private int currentActionFrame = -1;
     // logic action constant
     private ActionLoader actionLoader;
-    private Dictionary<string, Action> ACTION_DICT = new Dictionary<string, Action>();
-    private Dictionary<Action, string> REVERSE_ACTION_DICT = new Dictionary<Action, string>();
+    private Dictionary<string, Action> actionDict = new Dictionary<string, Action>();
+    private Dictionary<Action, string> reverseActionDict = new Dictionary<Action, string>();
     // hit stunt variable
     private int currentHitStuntFrame = -1;
 
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = new Color(1, 0, 0, 0.5f);
+    //    Gizmos.DrawCube(new Vector2(0.825f, 0f) + rb.position, new Vector2(1.75f, 0.7f));
+    //}
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         actionLoader = GetComponent<ActionLoader>();
-        ACTION_DICT = actionLoader.GetDictionary();
-        REVERSE_ACTION_DICT = actionLoader.GetReverseDictionary();
+        actionDict = actionLoader.GetDictionary();
+        reverseActionDict = actionLoader.GetReverseDictionary();
+        facingController = GameObject.Find("[Facing Controller]").GetComponent<FacingController>();
+        facingRightLastFrame = facingController.IsFacingRight(gameObject);
+        if (!facingRightLastFrame)
+        {
+            gameObject.GetComponent<SpriteRenderer>().flipX ^= true;
+        }
     }
     private void FixedUpdate()
     {
-        inputsThisFrame = inputhandler.GetInputs();
+        var facingRight = facingController.IsFacingRight(gameObject);
+        if (facingRightLastFrame != facingRight)
+        {
+            facingRightLastFrame = facingRight;
+            gameObject.GetComponent<SpriteRenderer>().flipX ^= true;
+        }
+        inputsThisFrame = inputHandler.GetInputs();
         if (currentActionFrame >= 0)
         {
             ActionLoading();
@@ -65,7 +85,6 @@ public class Character_Base : ClassScript
                 GroundOption();
             }
         }
-        // Logic that requires inputs
         SetAnimation();
     }
     private void GroundOption()
@@ -81,7 +100,7 @@ public class Character_Base : ClassScript
     private void GroundMovementLogic()
     {
         // go left
-        if (inputsThisFrame["Left"] > 0) // check for state 1.2.3 (dtected button press)
+        if (inputsThisFrame["Left"] > 0) // check for state 1,2,3 (detected button press)
         {
             rb.velocity = new Vector2(-1 * SPEED, rb.velocity.y);
         }
@@ -97,7 +116,7 @@ public class Character_Base : ClassScript
         // jump
         if (inputsThisFrame["Jump"] % 2 == 1) // check for state 1 and 3 (newly pressed)
         {
-            action = ACTION_DICT["Jump"];
+            action = actionDict["Jump"];
             currentActionFrame = 0;
             rb.velocity = new Vector2(0,0);
         }
@@ -106,23 +125,54 @@ public class Character_Base : ClassScript
     {
         if (inputsThisFrame["Attack1"] % 2 == 1) // check for state 1 and 3 (newly pressed)
         {
-            action = ACTION_DICT["Attack_Neutral"];
-            currentActionFrame = 0;
-            rb.velocity = new Vector2(0, 0);
+            if (facingRightLastFrame)
+            {
+                if (inputsThisFrame["Right"] != 0)
+                {
+                    action = actionDict["Attack_Forward"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+                }
+                else
+                {
+                    action = actionDict["Attack_Neutral"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+                }
+            }
+            else 
+            {
+                if (inputsThisFrame["Left"] != 0)
+                {
+                    action = actionDict["Attack_Forward"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+                }
+                else
+                {
+                    action = actionDict["Attack_Neutral"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+                }
+            }
         }
     }
     private void ActionLoading()
     {
         if (action != null)
         {
-            if (action.NextStep(currentActionFrame,rb,this))
+            if (action.NextStep(currentActionFrame,rb,this, facingRightLastFrame, inputsThisFrame))
             {
                 currentActionFrame++;
             }
             else
             {
-                action = null;
-                currentActionFrame = -1;
+                action = action.GetNextAction();
+                if (action == null)
+                {
+                    currentActionFrame = -1;
+                }
+                else { currentActionFrame = 0; }
             }
         }
     }
@@ -147,7 +197,7 @@ public class Character_Base : ClassScript
         }
         if (action != null)
         {
-            state = (State)Enum.Parse(typeof(State), REVERSE_ACTION_DICT[action]);
+            state = (State)Enum.Parse(typeof(State), reverseActionDict[action]);
             stateGotChanged = true;
             return;
         }
