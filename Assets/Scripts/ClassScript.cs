@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ClassScript : MonoBehaviour
 {
+    [System.Serializable]
     public class BufferHandle
     {
         protected Dictionary<string, int> recordedInput = new Dictionary<string, int>();
@@ -16,13 +17,14 @@ public class ClassScript : MonoBehaviour
 
         }
     }
+    [System.Serializable]
     public class JumpBufferHandle: BufferHandle
     {
-        private float m_jumpVelX;
-        private float m_jumpVelY;
-        private Action jumpUp;
-        private Action jumpRight;
-        private Action jumpLeft;
+        [SerializeField] private float m_jumpVelX;
+        [SerializeField] private float m_jumpVelY;
+        [SerializeField] private Action jumpUp;
+        [SerializeField] private Action jumpRight;
+        [SerializeField] private Action jumpLeft;
         public JumpBufferHandle(float jumpVelX = 5, float jumpVelY = 15)
         {
             m_jumpVelX = jumpVelX;
@@ -64,6 +66,7 @@ public class ClassScript : MonoBehaviour
             return actionDict;
         }
     }
+    [System.Serializable]
     public class Attack
     {
         private int m_startingFrame;
@@ -113,6 +116,7 @@ public class ClassScript : MonoBehaviour
             }
         }
     }
+    [System.Serializable]
     public class Movement
     {
         private int m_activeFrame;
@@ -131,6 +135,7 @@ public class ClassScript : MonoBehaviour
             rb.velocity = m_force;
         }
     }
+    [System.Serializable]
     public class InputBuffer
     {
         private int m_firstFrame;
@@ -156,14 +161,14 @@ public class ClassScript : MonoBehaviour
             return null;
         }
     }
-    
+    [System.Serializable]
     public class Action
     {
         private List<Attack> m_attacks;
         private List<Movement> m_movements;
-        private InputBuffer m_buffer;
-        private int m_lastFrame;
-        private Action m_nextAction = null;
+        [SerializeField] private InputBuffer m_buffer;
+        [SerializeField] private int m_lastFrame;
+        [SerializeField] private Action m_nextAction = null;
         /// <param name="lastFrame"> how long will this action last (formula : sencond = (2 * lastFrame + 3) /60 )</param>
         public Action(List<Attack> attacks, List<Movement> movements, InputBuffer buffer, int lastFrame)
         {
