@@ -78,8 +78,9 @@ public class ClassScript : MonoBehaviour
         private float m_damage;
         private int m_hitStunt;
         private LayerMask m_mask;
+        private int m_special;
 
-        public Attack(int startingFrame, int endingFrame, Vector2 point, Vector2 size, float angle, float damage, int hitStunt, string layerMask)
+        public Attack(int startingFrame, int endingFrame, Vector2 point, Vector2 size, float angle, float damage, int hitStunt, string layerMask, int special)
         {
             m_startingFrame = startingFrame;
             m_endingFrame = endingFrame;
@@ -90,6 +91,7 @@ public class ClassScript : MonoBehaviour
             m_damage = damage;
             m_hitStunt = hitStunt;
             m_mask = LayerMask.GetMask(layerMask);
+            m_special = special;
         }
         public bool IsActive(int currentFrame)
         {
@@ -111,7 +113,8 @@ public class ClassScript : MonoBehaviour
                 Character_Base detectedCharacter = detectedHitBox.GetComponentInParent<Character_Base>();
                 if (detectedCharacter != thisCharacterBase)
                 {
-                    detectedCharacter.TakeDamage(m_damage, m_hitStunt);
+                    m_special = 0;
+                    detectedCharacter.TakeDamage(m_damage, m_hitStunt, m_special);
                 }
             }
         }

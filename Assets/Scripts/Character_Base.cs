@@ -17,8 +17,9 @@ public class Character_Base : ClassScript
     private Rigidbody2D rb;
     private Collider2D col;
     //Finite States Machine for animation
-    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Damaged, Attack_Neutral, Attack_Forward } // all states
-    private State state = State.Idle; // starting state
+    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Damaged, Attack_Neutral, Attack_Forward, Knocked } // all states
+    //*************************************************** serailize state ********************************************
+    [SerializeField] private State state = State.Idle; // starting state
     private bool stateGotChanged = false; // to prevent multiple trigger
     //Inspector variable
     [SerializeField] private LayerMask ground;
@@ -38,6 +39,9 @@ public class Character_Base : ClassScript
     private Dictionary<Action, string> reverseActionDict = new Dictionary<Action, string>();
     // hit stunt variable
     private int currentHitStuntFrame = -1;
+    private int hitStuntState = -1;
+    // healthbar
+    [SerializeField] private HealthbarController healthbarController;
 
     //private void OnDrawGizmosSelected()
     //{
@@ -176,12 +180,14 @@ public class Character_Base : ClassScript
             }
         }
     }
-    public void TakeDamage(float damage, int hitStunt)
+    public void TakeDamage(float damage, int hitStunt, int special)
     {
         action = null;
         currentActionFrame = -1;
         currentHitStuntFrame = hitStunt;
         hitPoints -= damage;
+        healthbarController.SetHealth(hitPoints);
+        hitStuntState = special;
     }
     private void SetAnimation()
     {
@@ -192,8 +198,19 @@ public class Character_Base : ClassScript
     {
         if (currentHitStuntFrame >= 0)
         {
-            stateGotChanged = ChangeAnimationState(State.Damaged);
-            return;
+            if (hitStuntState == 0)
+            {
+                //print("get damaged!!");
+                stateGotChanged = ChangeAnimationState(State.Damaged);
+                return;
+            }
+            else if (hitStuntState == 1)
+            {
+                //print("get knocked!!");
+                stateGotChanged = ChangeAnimationState(State.Knocked);
+                return;
+            }
+            
         }
         if (action != null)
         {
