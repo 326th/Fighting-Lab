@@ -17,7 +17,7 @@ public class Character_Base : ClassScript
     private Rigidbody2D rb;
     private Collider2D col;
     //Finite States Machine for animation
-    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Damaged, Attack_Neutral, Attack_Forward, Knocked } // all states
+    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Damaged, Attack_Neutral, Attack_Forward, Knocked, Recovery } // all states
     //*************************************************** serailize state ********************************************
     [SerializeField] private State state = State.Idle; // starting state
     private bool stateGotChanged = false; // to prevent multiple trigger
@@ -80,6 +80,13 @@ public class Character_Base : ClassScript
         if (currentHitStuntFrame >= 0)
         {
             currentHitStuntFrame--;
+            if(currentHitStuntFrame == 0 && hitStuntState == 1)
+            {
+
+                // If knocked, then recovery
+                // Change action and state to recovery
+                // Change knocked to action
+            }
         }
         else
         {
@@ -88,6 +95,11 @@ public class Character_Base : ClassScript
             {
                 GroundOption();
             }
+            /// Option when character in the air
+            else
+            {
+                AirOption();
+            }
         }
         SetAnimation();
     }
@@ -95,6 +107,10 @@ public class Character_Base : ClassScript
     {   
         GroundMovementLogic();
         GroundAttackLogic();
+    }
+    private void AirOption()
+    {
+        AirAttackLogic();
     }
     private void CheckGround()
     {
@@ -157,6 +173,38 @@ public class Character_Base : ClassScript
                     action = actionDict["Attack_Neutral"];
                     currentActionFrame = 0;
                     rb.velocity = new Vector2(0, 0);
+                }
+            }
+        }
+    }
+    private void AirAttackLogic()
+    {
+        if (inputsThisFrame["Attack1"] % 2 == 1) // check for state 1 and 3 (newly pressed)
+        {
+            if (facingRightLastFrame)
+            {
+                if (inputsThisFrame["Right"] != 0)
+                {
+                    action = actionDict["Attack_Forward"];
+                    currentActionFrame = 0;
+                }
+                else
+                {
+                    action = actionDict["Attack_Neutral"];
+                    currentActionFrame = 0;
+                }
+            }
+            else
+            {
+                if (inputsThisFrame["Left"] != 0)
+                {
+                    action = actionDict["Attack_Forward"];
+                    currentActionFrame = 0;
+                }
+                else
+                {
+                    action = actionDict["Attack_Neutral"];
+                    currentActionFrame = 0;
                 }
             }
         }

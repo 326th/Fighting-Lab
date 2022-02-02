@@ -108,12 +108,13 @@ public class ClassScript : MonoBehaviour
             {
                 DetectedHitboxes = Physics2D.OverlapBoxAll(point: m_pointReverse + rb.position, size: m_size, angle: m_angle, layerMask: m_mask);
             }
+            print("deal damage");
             foreach (Collider2D detectedHitBox in DetectedHitboxes)
             {
                 Character_Base detectedCharacter = detectedHitBox.GetComponentInParent<Character_Base>();
                 if (detectedCharacter != thisCharacterBase)
                 {
-                    m_special = 0;
+                    print(m_damage);
                     detectedCharacter.TakeDamage(m_damage, m_hitStunt, m_special);
                 }
             }
@@ -168,6 +169,8 @@ public class ClassScript : MonoBehaviour
     public class Action
     {
         private List<Attack> m_attacks;
+        /// When hit change to true
+        private bool m_connected = false;
         private List<Movement> m_movements;
         [SerializeField] private InputBuffer m_buffer;
         [SerializeField] private int m_lastFrame;
@@ -184,9 +187,10 @@ public class ClassScript : MonoBehaviour
         {
             foreach (Attack attack in m_attacks)
             {
-                if (attack.IsActive(currentFrame))
+                if (attack.IsActive(currentFrame) && m_connected == false)
                 {
                     attack.DealDamage(rb, thisCharacterBase,facingRight);
+                    m_connected = true;
                 }
             }
             foreach (Movement movement in m_movements)
@@ -204,6 +208,7 @@ public class ClassScript : MonoBehaviour
         }
         public Action GetNextAction()
         {
+            m_connected = false;
             return m_nextAction;
         }
     }
