@@ -80,12 +80,12 @@ public class Character_Base : ClassScript
         if (currentHitStuntFrame >= 0)
         {
             currentHitStuntFrame--;
-            if(currentHitStuntFrame == 0 && hitStuntState == 1)
+            if (currentHitStuntFrame == 0 && hitStuntState == 1)
             {
-
-                // If knocked, then recovery
-                // Change action and state to recovery
-                // Change knocked to action
+                action = actionDict["Recovery"];
+                currentActionFrame = 0;
+                hitStuntState = -1;
+                rb.velocity = new Vector2(0, 0);
             }
         }
         else
@@ -101,6 +101,7 @@ public class Character_Base : ClassScript
                 AirOption();
             }
         }
+        
         SetAnimation();
     }
     private void GroundOption()
