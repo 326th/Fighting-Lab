@@ -18,7 +18,6 @@ public class Character_Base : ClassScript
     private Collider2D col;
     //Finite States Machine for animation
     private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Damaged, Attack_Neutral, Attack_Forward, Knocked, Recovery } // all states
-    //*************************************************** serailize state ********************************************
     [SerializeField] private State state = State.Idle; // starting state
     private bool stateGotChanged = false; // to prevent multiple trigger
     //Inspector variable
@@ -104,6 +103,48 @@ public class Character_Base : ClassScript
         
         SetAnimation();
     }
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            if (!isGrounded)
+            {
+                rb.velocity = new Vector2(0, 0);
+            }
+        }
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            Character_Base enemy = collision.gameObject.GetComponentInParent<Character_Base>();
+            if (!isGrounded)
+            {
+                if (facingRightLastFrame)
+                {
+                    rb.AddForce(new Vector2(-0.025f, 0));
+                }
+                else
+                {
+                    rb.AddForce(new Vector2(0.025f, 0));
+                }
+            }
+            else
+            {
+                if (!enemy.isGrounded)
+                {
+                    if (facingRightLastFrame)
+                    {
+                        rb.AddForce(new Vector2(-0.025f, 0));
+                    }
+                    else
+                    {
+                        rb.AddForce(new Vector2(0.025f, 0));
+                    }
+                }
+            }
+        }
+    }
     private void GroundOption()
     {   
         GroundMovementLogic();
@@ -112,6 +153,7 @@ public class Character_Base : ClassScript
     private void AirOption()
     {
         AirAttackLogic();
+
     }
     private void CheckGround()
     {
@@ -291,6 +333,9 @@ public class Character_Base : ClassScript
         }
         
     }
+
+    
+
     private bool ChangeAnimationState(State animationState)
     {
         if (state != animationState)
