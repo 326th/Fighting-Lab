@@ -235,6 +235,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character FPS Move
       objectReference: {fileID: 0}
+    - target: {fileID: 737330068140860287, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 824410577670866667, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
       propertyPath: test
@@ -813,6 +818,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Character FPS Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 737330068140860287, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 824410577670866667, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}

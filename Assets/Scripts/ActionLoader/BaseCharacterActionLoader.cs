@@ -23,8 +23,7 @@ public class BaseCharacterActionLoader : ActionLoader
         actionDict.Add("Attack_Forward", attackForward);
         Action recovery = new Action(new List<Attack>(), new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()),20);
         actionDict.Add("Recovery", recovery);
-        return actionDict;
-        // ทำ slide ตอนโดด
+        return actionDict;  
         // j l.attack, k h.attack, l grab, ; block 
         // block โดนดาเมจนิดนึง
         // จับ
