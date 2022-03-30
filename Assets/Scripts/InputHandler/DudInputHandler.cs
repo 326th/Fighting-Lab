@@ -5,13 +5,22 @@ using UnityEngine;
 public class DudInputHandler : InputHandler
 {
     public List<string> inputButton = new List<string>();
+    public string heldButton = "";
+    public int inputType = 0;
     // what buttons will we read, not in use    
 
     private void Start()
     {
         foreach (string input in inputButton)
         {
-            inputs.Add(input, 0);
+            if(input == heldButton)
+            {
+                inputs.Add(input, inputType);
+            }
+            else
+            {
+                inputs.Add(input, 0);
+            }
         }
     }
 }

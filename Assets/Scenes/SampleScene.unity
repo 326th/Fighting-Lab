@@ -867,12 +867,12 @@ PrefabInstance:
     - target: {fileID: 2125514461184767870, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2125514461184767870, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2125514461184767870, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
@@ -1136,6 +1136,9 @@ MonoBehaviour:
   - Right
   - Jump
   - Attack1
+  - Attack2
+  - Grab
+  - Guard
 --- !u!1 &948458203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,6 +1247,11 @@ MonoBehaviour:
   - Right
   - Jump
   - Attack1
+  - Attack2
+  - Grab
+  - Guard
+  heldButton: 
+  inputType: 3
 --- !u!4 &1039622192
 Transform:
   m_ObjectHideFlags: 0

@@ -91,13 +91,13 @@ public class ClassScript : MonoBehaviour
             m_damage = damage;
             m_hitStunt = hitStunt;
             m_mask = LayerMask.GetMask(layerMask);
-            m_special = special;
+            m_special = special; // 0-normal 1-heavy 2-grab
         }
         public bool IsActive(int currentFrame)
         {
             return m_startingFrame <= currentFrame && currentFrame <= m_endingFrame;
         }
-        public void DealDamage(Rigidbody2D rb, Character_Base thisCharacterBase, bool facingRight)
+        public bool DealDamage(Rigidbody2D rb, Character_Base thisCharacterBase, bool facingRight)
         {
             Collider2D[] DetectedHitboxes;
             if (facingRight)
@@ -108,16 +108,22 @@ public class ClassScript : MonoBehaviour
             {
                 DetectedHitboxes = Physics2D.OverlapBoxAll(point: m_pointReverse + rb.position, size: m_size, angle: m_angle, layerMask: m_mask);
             }
-            print("deal damage");
             foreach (Collider2D detectedHitBox in DetectedHitboxes)
             {
                 Character_Base detectedCharacter = detectedHitBox.GetComponentInParent<Character_Base>();
                 if (detectedCharacter != thisCharacterBase)
                 {
-                    print(m_damage);
                     detectedCharacter.TakeDamage(m_damage, m_hitStunt, m_special);
+                    print("detected hitbox");
+                    if (m_special == 0)
+                    {
+                        print("Combotime");
+                        thisCharacterBase.comboTime = 5;
+                    }
+                    return true;
                 }
             }
+            return false;
         }
     }
     [System.Serializable]
@@ -169,8 +175,6 @@ public class ClassScript : MonoBehaviour
     public class Action
     {
         private List<Attack> m_attacks;
-        /// When hit change to true
-        private bool m_connected = false;
         private List<Movement> m_movements;
         [SerializeField] private InputBuffer m_buffer;
         [SerializeField] private int m_lastFrame;
@@ -187,10 +191,9 @@ public class ClassScript : MonoBehaviour
         {
             foreach (Attack attack in m_attacks)
             {
-                if (attack.IsActive(currentFrame) && m_connected == false)
+                if (attack.IsActive(currentFrame) && thisCharacterBase.connected == false)
                 {
-                    attack.DealDamage(rb, thisCharacterBase,facingRight);
-                    m_connected = true;
+                    thisCharacterBase.connected = attack.DealDamage(rb, thisCharacterBase,facingRight);
                 }
             }
             foreach (Movement movement in m_movements)
@@ -206,9 +209,9 @@ public class ClassScript : MonoBehaviour
             }
             return currentFrame < m_lastFrame;
         }
-        public Action GetNextAction()
+        public Action GetNextAction(Character_Base thisCharacterBase)
         {
-            m_connected = false;
+            thisCharacterBase.connected = false;
             return m_nextAction;
         }
     }
