@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4093106345311035297}
   m_Layer: 8
   m_Name: Character FPS
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,6 +168,9 @@ MonoBehaviour:
   hitPoints: 100
   facingController: {fileID: 0}
   inputHandler: {fileID: 0}
+  rb: {fileID: 0}
+  state: 0
+  stateGotChanged: 0
   ground:
     serializedVersion: 2
     m_Bits: 512
@@ -175,6 +178,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   SPEED: 5
+  currentHitStuntFrame: -1
+  hitStuntState: -1
+  connected: 0
+  healthbarController: {fileID: 0}
+  comboTime: -1
 --- !u!114 &4093106345311035297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +206,7 @@ GameObject:
   - component: {fileID: 497807980485218423}
   - component: {fileID: 2100199346994288841}
   m_Layer: 10
-  m_Name: HurtBox Move
+  m_Name: HurtBox Idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

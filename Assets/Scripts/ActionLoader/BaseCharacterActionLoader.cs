@@ -24,8 +24,14 @@ public class BaseCharacterActionLoader : ActionLoader
         //Action: Heavy Attack
         attack_list = new List<Attack>();
         attack_list.Add(new Attack(15, 19, new Vector2(0.825f, 0f), new Vector2(1.75f, 0.7f), 0, 16, 20, "HurtBox", 1));
+        Action attackHeavy = new Action(attack_list, new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()), 20);
+        actionDict.Add("Attack_Heavy", attackHeavy);
+
+        //Action: Attack Forward
+        attack_list = new List<Attack>();
+        attack_list.Add(new Attack(15, 19, new Vector2(0.825f, 0f), new Vector2(1.75f, 0.7f), 0, 16, 20, "HurtBox", 1));
         Action attackForward = new Action(attack_list, new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()), 20);
-        actionDict.Add("Attack_Heavy", attackForward);
+        actionDict.Add("Attack_Forward", attackForward);
 
         //Action: Air Light Attack
         attack_list = new List<Attack>();
@@ -39,11 +45,17 @@ public class BaseCharacterActionLoader : ActionLoader
         Action air_heavy_attack = new Action(attack_list, new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()), 20);
         actionDict.Add("Air_Attack_Heavy", air_heavy_attack);
 
-        ////Fast Heavy Attack
-        //attack_list = new List<Attack>();
-        //attack_list.Add(new Attack(7, 12, new Vector2(0.825f, 0f), new Vector2(1.75f, 0.7f), 0, 16, 20, "HurtBox", 1));
-        //Action fastKick = new Action(attack_list, new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()), 20);
-        //actionDict.Add("Attack_Forward", fastKick);
+        //Action: Crouch Light Attack
+        attack_list = new List<Attack>();
+        attack_list.Add(new Attack(7, 12, new Vector2(0.75f, -1.25f), new Vector2(1.25f, 1.5f), 0, 8, 9, "HurtBox", 0));
+        Action crouch_light_attack = new Action(attack_list, new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()), 15);
+        actionDict.Add("Crouch_Attack_Light", crouch_light_attack);
+
+        //Action: Crouch Heavy Attack
+        attack_list = new List<Attack>();
+        attack_list.Add(new Attack(15, 19, new Vector2(0.75f, -1.25f), new Vector2(1.25f, 1.5f), 0, 16, 20, "HurtBox", 1));
+        Action crouch_heavy_attack = new Action(attack_list, new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()), 20);
+        actionDict.Add("Crouch_Attack_Heavy", crouch_heavy_attack);
 
         //Action: Recovery
         attack_list = new List<Attack>();
@@ -60,6 +72,10 @@ public class BaseCharacterActionLoader : ActionLoader
         //Action: Guard
         Action guard = new Action(new List<Attack>(), new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()), 5);
         actionDict.Add("Guard", guard);
+
+        //Action: Crouch Guard
+        Action crouchGuard = new Action(new List<Attack>(), new List<Movement>(), new InputBuffer(-1, -1, new BufferHandle()), 5);
+        actionDict.Add("Crouch_Guard", crouchGuard);
 
         return actionDict;  
 

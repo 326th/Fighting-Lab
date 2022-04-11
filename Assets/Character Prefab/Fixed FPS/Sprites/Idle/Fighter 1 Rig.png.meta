@@ -1,0 +1,608 @@
+fileFormatVersion: 2
+guid: 2fe8e98757fa86a4a9a0af99a55b06a8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3994868456616707530
+    second: Fighter 1 Rig_0
+  - first:
+      213: -3056318424482968053
+    second: Fighter 1 Rig_1
+  - first:
+      213: -1537486133577559643
+    second: Fighter 1 Rig_2
+  - first:
+      213: -2814225308572928910
+    second: Fighter 1 Rig_3
+  - first:
+      213: 1968813511317266381
+    second: Fighter 1 Rig_4
+  - first:
+      213: 8739273493938841390
+    second: Fighter 1 Rig_5
+  - first:
+      213: -7967164968330482478
+    second: Fighter 1 Rig_6
+  - first:
+      213: -1919750386040637782
+    second: Fighter 1 Rig_7
+  - first:
+      213: -1684732731099291209
+    second: Fighter 1 Rig_8
+  - first:
+      213: 698701642694104267
+    second: Fighter 1 Rig_9
+  - first:
+      213: -5487959283978314433
+    second: Fighter 1 Rig_10
+  - first:
+      213: -6247226805847225663
+    second: Fighter 1 Rig_11
+  - first:
+      213: -6901398370965450870
+    second: Fighter 1 Rig_12
+  - first:
+      213: 5542710926970252708
+    second: Fighter 1 Rig_13
+  - first:
+      213: 6273612741671939521
+    second: Fighter 1 Rig_14
+  - first:
+      213: -8790111346910102250
+    second: Fighter 1 Rig_15
+  - first:
+      213: 3642156284894166283
+    second: Fighter 1 Rig_16
+  - first:
+      213: 1612169142894427800
+    second: Fighter 1 Rig_17
+  - first:
+      213: -7729785397288314000
+    second: Fighter 1 Rig_18
+  - first:
+      213: 8391962456507878889
+    second: Fighter 1 Rig_19
+  - first:
+      213: -6313848974925377254
+    second: Fighter 1 Rig_20
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Fighter 1 Rig_0
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 6945
+        width: 168
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac54d0112bf907730800000000000000
+      internalID: 3994868456616707530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_1
+      rect:
+        serializedVersion: 2
+        x: 2328
+        y: 6945
+        width: 172
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0e06340696c595d0800000000000000
+      internalID: -3056318424482968053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_2
+      rect:
+        serializedVersion: 2
+        x: 3922
+        y: 6945
+        width: 180
+        height: 465
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a15509e180c9aae0800000000000000
+      internalID: -1537486133577559643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_3
+      rect:
+        serializedVersion: 2
+        x: 5520
+        y: 6945
+        width: 187
+        height: 465
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 274b8940efcd1f8d0800000000000000
+      internalID: -2814225308572928910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_4
+      rect:
+        serializedVersion: 2
+        x: 7117
+        y: 6945
+        width: 192
+        height: 469
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcf1e031571a25b10800000000000000
+      internalID: 1968813511317266381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_5
+      rect:
+        serializedVersion: 2
+        x: 715
+        y: 5344
+        width: 191
+        height: 469
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e272639a0f2284970800000000000000
+      internalID: 8739273493938841390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_6
+      rect:
+        serializedVersion: 2
+        x: 2320
+        y: 5344
+        width: 184
+        height: 465
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2dca9b35ca1fe6190800000000000000
+      internalID: -7967164968330482478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_7
+      rect:
+        serializedVersion: 2
+        x: 3922
+        y: 5344
+        width: 180
+        height: 465
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa6f0a6f13dab55e0800000000000000
+      internalID: -1919750386040637782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_8
+      rect:
+        serializedVersion: 2
+        x: 5527
+        y: 5344
+        width: 172
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b16a55d180ae98e0800000000000000
+      internalID: -1684732731099291209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_9
+      rect:
+        serializedVersion: 2
+        x: 7129
+        y: 5344
+        width: 172
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc493c0317942b900800000000000000
+      internalID: 698701642694104267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_10
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 3746
+        width: 168
+        height: 457
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3d5aa09b1ad6d3b0800000000000000
+      internalID: -5487959283978314433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_11
+      rect:
+        serializedVersion: 2
+        x: 2336
+        y: 3750
+        width: 184
+        height: 453
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ca8d2eb1546d49a0800000000000000
+      internalID: -6247226805847225663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_12
+      rect:
+        serializedVersion: 2
+        x: 3938
+        y: 3754
+        width: 195
+        height: 445
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8f052d2fbe4930a0800000000000000
+      internalID: -6901398370965450870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_13
+      rect:
+        serializedVersion: 2
+        x: 5539
+        y: 3754
+        width: 199
+        height: 441
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4adecb6b83aabec40800000000000000
+      internalID: 5542710926970252708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_14
+      rect:
+        serializedVersion: 2
+        x: 7137
+        y: 3758
+        width: 203
+        height: 441
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cd68bdac89501750800000000000000
+      internalID: 6273612741671939521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_15
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 2156
+        width: 196
+        height: 446
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61dfa4f4d40430680800000000000000
+      internalID: -8790111346910102250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_16
+      rect:
+        serializedVersion: 2
+        x: 2340
+        y: 2152
+        width: 187
+        height: 453
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0db29918d98b8230800000000000000
+      internalID: 3642156284894166283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_17
+      rect:
+        serializedVersion: 2
+        x: 3938
+        y: 2152
+        width: 179
+        height: 453
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89e71183b439f5610800000000000000
+      internalID: 1612169142894427800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_18
+      rect:
+        serializedVersion: 2
+        x: 5539
+        y: 2148
+        width: 168
+        height: 457
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07bd0a4a2294ab490800000000000000
+      internalID: -7729785397288314000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_19
+      rect:
+        serializedVersion: 2
+        x: 7137
+        y: 2145
+        width: 164
+        height: 460
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ed0194446d367470800000000000000
+      internalID: 8391962456507878889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fighter 1 Rig_20
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 543
+        width: 168
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a11db1c3fc3b068a0800000000000000
+      internalID: -6313848974925377254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

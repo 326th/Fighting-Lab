@@ -23,4 +23,18 @@ public class DudInputHandler : InputHandler
             }
         }
     }
+    private void FixedUpdate()
+    {
+        foreach (string input in inputButton)
+        {
+            if (input == heldButton)
+            {
+                inputs[input] = inputType;
+            }
+            else
+            {
+                inputs[input] = 0;
+            }
+        }
+    }
 }

@@ -9,7 +9,7 @@ public class Character_Base : ClassScript
 
     //Facing Handler
     [SerializeField] private FacingController facingController;
-    private bool facingRightLastFrame = false;
+    public bool facingRightLastFrame = false;
 
     //Input getter
     [SerializeField] private InputHandler inputHandler;
@@ -17,19 +17,19 @@ public class Character_Base : ClassScript
 
     //PLayer Components
     private Animator anim;
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private Collider2D col;
     private SpriteRenderer sr;
 
     //Finite States Machine for animation
-    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Damaged, Attack_Light, Air_Attack_Light, Attack_Heavy, Air_Attack_Heavy, Knocked, Recovery, Grab, Grabbed, Guard, Crouch } // all states
+    private enum State { Idle, Walk, Jump, Go_Up, Go_Down, Damaged, Attack_Light, Air_Attack_Light, Attack_Heavy, Attack_Forward, Air_Attack_Heavy, Knocked, Recovery, Grab, Grabbed, Guard, Crouch, Crouch_Attack_Light, Crouch_Attack_Heavy, Crouch_Guard } // all states
     [SerializeField] private State state = State.Idle; // starting state
     [SerializeField] private bool stateGotChanged = false; // to prevent multiple trigger
 
     //Inspector variable
     [SerializeField] private LayerMask ground;
     [SerializeField] private LayerMask hurtBox;
-    [SerializeField] private float SPEED = 5f;
+    [SerializeField] public float SPEED = 5f;
 
     //Game logic constant
     private float PADDING = 0.05f;
@@ -103,31 +103,36 @@ public class Character_Base : ClassScript
         //Get Input
         inputsThisFrame = inputHandler.GetInputs();
 
-        if (action != null)
-        {
-            print(connected);
-        }
-
-        if (inputsThisFrame["Attack1"] % 2 == 1)
-        {
-            print("inputsThisFrame: Light");
-        }
-
-
         if (comboTime > -1)
         {
             //print("Combotime" + comboTime);
-            if (inputsThisFrame["Attack2"] % 2 == 1) // check for state 1 and 3 (newly pressed)
+            if (!crouch)
             {
+                if (inputsThisFrame["Attack2"] % 2 == 1) // check for state 1 and 3 (newly pressed)
+                {
 
-                //action = null;
-                comboTime = -1;
-                //print("attack forward!");
-                connected = false;
-                HeavyAttack();
+                    comboTime = -1;
+                    connected = false;
+                    HeavyAttack();
 
-                SetAnimation();
+                    SetAnimation();
+                }
             }
+            else
+            {
+                if (inputsThisFrame["Attack2"] % 2 == 1) // check for state 1 and 3 (newly pressed)
+                {
+
+                    comboTime = -1;
+                    connected = false;
+                    action = actionDict["Crouch_Attack_Heavy"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+
+                    SetAnimation();
+                }
+            }
+            
         }
 
         if (currentActionFrame >= 0)
@@ -299,42 +304,80 @@ public class Character_Base : ClassScript
     //Ground Attack Logic
     private void GroundAttackLogic()
     {
-        //Light attack
-        if (inputsThisFrame["Attack1"] % 2 == 1) // check for state 1 and 3 (newly pressed)
+        if (!crouch)
         {
-            if (facingRightLastFrame)
+            //Light attack
+            if (inputsThisFrame["Attack1"] % 2 == 1) // check for state 1 and 3 (newly pressed)
             {
-                action = actionDict["Attack_Light"];
-                currentActionFrame = 0;
-                rb.velocity = new Vector2(0, 0);
+                if (facingRightLastFrame)
+                {
+                    action = actionDict["Attack_Light"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+                }
+                else
+                {
+                    action = actionDict["Attack_Light"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+                }
             }
-            else
-            {
-                action = actionDict["Attack_Light"];
-                currentActionFrame = 0;
-                rb.velocity = new Vector2(0, 0);
-            }
-        }
 
-        if (inputsThisFrame["Attack2"] % 2 == 1) // check for state 1 and 3 (newly pressed)
-        {
-            //print("non-combo heavy attack");
-            HeavyAttack();
+            if (inputsThisFrame["Attack2"] % 2 == 1) // check for state 1 and 3 (newly pressed)
+            {
+                HeavyAttack();
+            }
+
+            //Guard
+            if (inputsThisFrame["Guard"] == 1 || inputsThisFrame["Guard"] == 2 || inputsThisFrame["Guard"] == 3) // check for state 1 2 and 3
+            {
+                action = actionDict["Guard"];
+                //stateGotChanged = ChangeAnimationState(State.Guard);
+                currentActionFrame = 0;
+                rb.velocity = new Vector2(0, 0);
+            }
         }
+        else
+        {
+            //Crouch Light attack
+            if (inputsThisFrame["Attack1"] % 2 == 1) // check for state 1 and 3 (newly pressed)
+            {
+                if (facingRightLastFrame)
+                {
+                    action = actionDict["Crouch_Attack_Light"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+                }
+                else
+                {
+                    action = actionDict["Crouch_Attack_Light"];
+                    currentActionFrame = 0;
+                    rb.velocity = new Vector2(0, 0);
+                }
+            }
+
+            //Crouch Heavy attack
+            if (inputsThisFrame["Attack2"] % 2 == 1) // check for state 1 and 3 (newly pressed)
+            {
+                action = actionDict["Crouch_Attack_Heavy"];
+                currentActionFrame = 0;
+                rb.velocity = new Vector2(0, 0);
+            }
+
+            //Crouch Guard
+            if (inputsThisFrame["Guard"] == 1 || inputsThisFrame["Guard"] == 2 || inputsThisFrame["Guard"] == 3) // check for state 1 2 and 3
+            {
+                action = actionDict["Crouch_Guard"];
+                currentActionFrame = 0;
+                rb.velocity = new Vector2(0, 0);
+            }
+        }
+        
 
         //Grab
         if (inputsThisFrame["Grab"] % 2 == 1) // check for state 1 and 3 (newly pressed)
         {
             action = actionDict["Grab"];
-            currentActionFrame = 0;
-            rb.velocity = new Vector2(0, 0);
-        }
-
-        //Guard
-        if (inputsThisFrame["Guard"] == 1 || inputsThisFrame["Guard"] == 2 || inputsThisFrame["Guard"] == 3) // check for state 1 2 and 3
-        {
-            action = actionDict["Guard"];
-            //stateGotChanged = ChangeAnimationState(State.Guard);
             currentActionFrame = 0;
             rb.velocity = new Vector2(0, 0);
         }
@@ -377,15 +420,34 @@ public class Character_Base : ClassScript
     {
         if (facingRightLastFrame)
         {
-            action = actionDict["Attack_Heavy"];
-            currentActionFrame = 0;
-            rb.velocity = new Vector2(0, 0);
+            if (inputsThisFrame["Right"] != 0)
+            {
+                action = actionDict["Attack_Forward"];
+                currentActionFrame = 0;
+                rb.velocity = new Vector2(0, 0);
+                print("atk_forward");
+            }
+            else
+            {
+                action = actionDict["Attack_Heavy"];
+                currentActionFrame = 0;
+                rb.velocity = new Vector2(0, 0);
+            }
         }
         else
         {
-            action = actionDict["Attack_Heavy"];
-            currentActionFrame = 0;
-            rb.velocity = new Vector2(0, 0);
+            if (inputsThisFrame["Left"] != 0)
+            {
+                action = actionDict["Attack_Forward"];
+                currentActionFrame = 0;
+                rb.velocity = new Vector2(0, 0);
+            }
+            else
+            {
+                action = actionDict["Attack_Heavy"];
+                currentActionFrame = 0;
+                rb.velocity = new Vector2(0, 0);
+            }
         }
     }
 
@@ -464,7 +526,6 @@ public class Character_Base : ClassScript
             }
             else if (hitStuntState == 1)
             {
-                //print("knocked!!");
                 stateGotChanged = ChangeAnimationState(State.Knocked);
                 iFrame = 10;
                 return;
@@ -546,4 +607,5 @@ public class Character_Base : ClassScript
             stateGotChanged = false;
         }
     }
+
 }
