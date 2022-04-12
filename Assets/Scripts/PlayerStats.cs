@@ -28,19 +28,19 @@ public class PlayerStats
 
     public PlayerStats (Character_Base player)
     {
-    attackCount = player.attackCount;
-    hitCount = player.hitCount;
-    comboCount = player.comboCount;
-    lightAttackCount = player.lightAttackCount;
-    heavyAttackCount = player. heavyAttackCount;
-    attackForwardCount = player.attackForwardCount;
-    airLightAttackCount = player.airLightAttackCount;
-    airHeavyAttackCount = player.airHeavyAttackCount;
-    crouchLightAttackCount = player.crouchLightAttackCount;
-    crouchHeavyAttackCount = player.crouchHeavyAttackCount;
-    jumpCount = player.jumpCount;
-    grabCount = player.grabCount;
-    guardCount = player.guardCount;
-    crouchGuardCount = player.crouchGuardCount;
-}
+        attackCount = player.attackCount;
+        hitCount = player.hitCount;
+        comboCount = player.comboCount;
+        lightAttackCount = player.lightAttackCount;
+        heavyAttackCount = player. heavyAttackCount;
+        attackForwardCount = player.attackForwardCount;
+        airLightAttackCount = player.airLightAttackCount;
+        airHeavyAttackCount = player.airHeavyAttackCount;
+        crouchLightAttackCount = player.crouchLightAttackCount;
+        crouchHeavyAttackCount = player.crouchHeavyAttackCount;
+        jumpCount = player.jumpCount;
+        grabCount = player.grabCount;
+        guardCount = player.guardCount;
+        crouchGuardCount = player.crouchGuardCount;
+    }
 }

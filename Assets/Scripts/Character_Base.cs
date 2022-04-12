@@ -76,7 +76,7 @@ public class Character_Base : ClassScript
 
     //Stats
     public int attackCount;
-    public int hitCount;
+    public int hitCount = 20;
     public int comboCount;
     public int lightAttackCount;
     public int heavyAttackCount;
@@ -636,6 +636,5 @@ public class Character_Base : ClassScript
     public void SavePlayer()
     {
         SaveSystem.SavePlayer(this);
-        print("saved!!");
     }
 }

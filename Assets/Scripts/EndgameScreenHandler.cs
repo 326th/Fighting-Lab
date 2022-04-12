@@ -16,7 +16,13 @@ public class EndgameScreenHandler : MonoBehaviour
     public void UpdateText()
     {
         PlayerStats data = SaveSystem.LoadPlayer();
-        hitRate = data.hitCount / data.attackCount;
-        hitRateText.text = hitRate.ToString();
+        print(data.hitCount);
+        print(data.attackCount);
+        if (data.attackCount != 0)
+        {
+            hitRate = (float)data.hitCount / (float)data.attackCount;
+        }
+        
+        hitRateText.text = "Hit Rate (%): " + hitRate.ToString();
     }
 }
