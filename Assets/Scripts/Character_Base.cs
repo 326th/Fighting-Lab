@@ -73,6 +73,22 @@ public class Character_Base : ClassScript
     //    Gizmos.color = new Color(1, 0, 0, 0.5f);
     //    Gizmos.DrawCube(new Vector2(0.75f, -1.25f) + rb.position, new Vector2(1.25f, 1.5f));
     //}
+
+    //Stats
+    public int attackCount;
+    public int hitCount;
+    public int comboCount;
+    public int lightAttackCount;
+    public int heavyAttackCount;
+    public int attackForwardCount;
+    public int airLightAttackCount;
+    public int airHeavyAttackCount;
+    public int crouchLightAttackCount;
+    public int crouchHeavyAttackCount;
+    public int jumpCount;
+    public int grabCount;
+    public int guardCount;
+    public int crouchGuardCount;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -114,6 +130,7 @@ public class Character_Base : ClassScript
                     comboTime = -1;
                     connected = false;
                     HeavyAttack();
+                    comboCount++;
 
                     SetAnimation();
                 }
@@ -128,6 +145,7 @@ public class Character_Base : ClassScript
                     action = actionDict["Crouch_Attack_Heavy"];
                     currentActionFrame = 0;
                     rb.velocity = new Vector2(0, 0);
+                    comboCount++;
 
                     SetAnimation();
                 }
@@ -321,11 +339,13 @@ public class Character_Base : ClassScript
                     currentActionFrame = 0;
                     rb.velocity = new Vector2(0, 0);
                 }
+                attackCount++;
             }
 
             if (inputsThisFrame["Attack2"] % 2 == 1) // check for state 1 and 3 (newly pressed)
             {
                 HeavyAttack();
+                attackCount++;
             }
 
             //Guard
@@ -354,6 +374,7 @@ public class Character_Base : ClassScript
                     currentActionFrame = 0;
                     rb.velocity = new Vector2(0, 0);
                 }
+                attackCount++;
             }
 
             //Crouch Heavy attack
@@ -362,6 +383,7 @@ public class Character_Base : ClassScript
                 action = actionDict["Crouch_Attack_Heavy"];
                 currentActionFrame = 0;
                 rb.velocity = new Vector2(0, 0);
+                attackCount++;
             }
 
             //Crouch Guard
@@ -380,6 +402,7 @@ public class Character_Base : ClassScript
             action = actionDict["Grab"];
             currentActionFrame = 0;
             rb.velocity = new Vector2(0, 0);
+            attackCount++;
         }
     }
 
@@ -399,6 +422,7 @@ public class Character_Base : ClassScript
                 action = actionDict["Air_Attack_Light"];
                 currentActionFrame = 0;
             }
+            attackCount++;
         }
 
         //Heavy Attack
@@ -414,6 +438,7 @@ public class Character_Base : ClassScript
                 action = actionDict["Air_Attack_Heavy"];
                 currentActionFrame = 0;
             }
+            attackCount++;
         }
     }
     private void HeavyAttack()
@@ -608,4 +633,9 @@ public class Character_Base : ClassScript
         }
     }
 
+    public void SavePlayer()
+    {
+        SaveSystem.SavePlayer(this);
+        print("saved!!");
+    }
 }

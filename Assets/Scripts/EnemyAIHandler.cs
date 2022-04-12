@@ -12,7 +12,7 @@ public class EnemyAIHandler : InputHandler
     [SerializeField] float playerDistance;
 
     //AI decision time
-    private static int decisionTime = 15;
+    private static int decisionTime = 5;
     private int currentDecisionTime = decisionTime;
 
     //Return random value between 0 to 1

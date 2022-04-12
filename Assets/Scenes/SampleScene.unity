@@ -863,7 +863,7 @@ PrefabInstance:
         type: 3}
       propertyPath: inputHandler
       value: 
-      objectReference: {fileID: 597543838}
+      objectReference: {fileID: 1039622191}
     - target: {fileID: 824410577670866667, guid: 0e1a33f7ce0590b448e9b77d32a19baf,
         type: 3}
       propertyPath: facingController
@@ -1030,7 +1030,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &597543838
 MonoBehaviour:
   m_ObjectHideFlags: 0

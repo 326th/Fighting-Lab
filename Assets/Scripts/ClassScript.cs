@@ -114,12 +114,12 @@ public class ClassScript : MonoBehaviour
                 if (detectedCharacter != thisCharacterBase)
                 {
                     detectedCharacter.TakeDamage(m_damage, m_hitStunt, m_special);
-                    //print("detected hitbox");
                     if (m_special == 0)
                     {
                         //print("Combotime");
                         thisCharacterBase.comboTime = 5;
                     }
+                    thisCharacterBase.hitCount++;
                     return true;
                 }
             }
