@@ -15,7 +15,7 @@ public class CountdownController : MonoBehaviour
 
     IEnumerator CountdownToStart()
     {
-        while(countdownTime > 0)
+        while (countdownTime > 0)
         {
             countdownDisplay.text = countdownTime.ToString();
 
@@ -25,8 +25,6 @@ public class CountdownController : MonoBehaviour
         }
 
         countdownDisplay.text = "Fight!";
-
-        //TODO: Begin game
 
         yield return new WaitForSeconds(1f);
 

@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TrainingScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/CharacterSelectionScene.unity
+    guid: 93bf72266e7a7824a8b567e91d20b915
   m_configObjects: {}

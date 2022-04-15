@@ -22,8 +22,4 @@ public class ButtonController : MonoBehaviour
         button.image.rectTransform.sizeDelta = new Vector3(X, Y);
         //button.Text.fontSize = TextSize;
     }
-    public void LoadScene(string scenceName)
-    {
-        SceneManager.LoadScene(scenceName);
-    }
 }
