@@ -76,7 +76,7 @@ public class Character_Base : ClassScript
 
     //Stats
     public int attackCount;
-    public int hitCount = 20;
+    public int hitCount;
     public int comboCount;
     public int lightAttackCount;
     public int heavyAttackCount;
@@ -89,6 +89,10 @@ public class Character_Base : ClassScript
     public int grabCount;
     public int guardCount;
     public int crouchGuardCount;
+    public int moveForwardCount;
+    public int moveBackwardCount;
+    public int attackedOnAirCount;
+    public int grabbedOnGuardCount;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -300,11 +304,27 @@ public class Character_Base : ClassScript
         if (inputsThisFrame["Left"] > 0) // check for state 1,2,3 (detected button press)
         {
             rb.velocity = new Vector2(-1 * SPEED, rb.velocity.y);
+            if (facingRightLastFrame)
+            {
+                moveBackwardCount++;
+            }
+            else
+            {
+                moveForwardCount++;
+            }
         }
         // Movement: Right
         else if (inputsThisFrame["Right"] > 0)
         {
             rb.velocity = new Vector2(SPEED, rb.velocity.y);
+            if (facingRightLastFrame)
+            {
+                moveForwardCount++;
+            }
+            else
+            {
+                moveBackwardCount++;
+            }
         }
         else
         {
@@ -316,6 +336,7 @@ public class Character_Base : ClassScript
             action = actionDict["Jump"];
             currentActionFrame = 0;
             rb.velocity = new Vector2(0, 0);
+            jumpCount++;
         }
     }
 
@@ -340,6 +361,7 @@ public class Character_Base : ClassScript
                     rb.velocity = new Vector2(0, 0);
                 }
                 attackCount++;
+                lightAttackCount++;
             }
 
             if (inputsThisFrame["Attack2"] % 2 == 1) // check for state 1 and 3 (newly pressed)
@@ -355,6 +377,7 @@ public class Character_Base : ClassScript
                 //stateGotChanged = ChangeAnimationState(State.Guard);
                 currentActionFrame = 0;
                 rb.velocity = new Vector2(0, 0);
+                guardCount++;
             }
         }
         else
@@ -375,6 +398,7 @@ public class Character_Base : ClassScript
                     rb.velocity = new Vector2(0, 0);
                 }
                 attackCount++;
+                crouchLightAttackCount++;
             }
 
             //Crouch Heavy attack
@@ -384,6 +408,7 @@ public class Character_Base : ClassScript
                 currentActionFrame = 0;
                 rb.velocity = new Vector2(0, 0);
                 attackCount++;
+                crouchHeavyAttackCount++;
             }
 
             //Crouch Guard
@@ -392,6 +417,7 @@ public class Character_Base : ClassScript
                 action = actionDict["Crouch_Guard"];
                 currentActionFrame = 0;
                 rb.velocity = new Vector2(0, 0);
+                crouchGuardCount++;
             }
         }
         
@@ -403,6 +429,7 @@ public class Character_Base : ClassScript
             currentActionFrame = 0;
             rb.velocity = new Vector2(0, 0);
             attackCount++;
+            grabCount++;
         }
     }
 
@@ -423,6 +450,7 @@ public class Character_Base : ClassScript
                 currentActionFrame = 0;
             }
             attackCount++;
+            airLightAttackCount++;
         }
 
         //Heavy Attack
@@ -439,10 +467,12 @@ public class Character_Base : ClassScript
                 currentActionFrame = 0;
             }
             attackCount++;
+            airHeavyAttackCount++;
         }
     }
     private void HeavyAttack()
     {
+        // Attack Forward/Heavy Attack
         if (facingRightLastFrame)
         {
             if (inputsThisFrame["Right"] != 0)
@@ -450,13 +480,14 @@ public class Character_Base : ClassScript
                 action = actionDict["Attack_Forward"];
                 currentActionFrame = 0;
                 rb.velocity = new Vector2(0, 0);
-                print("atk_forward");
+                attackForwardCount++;
             }
             else
             {
                 action = actionDict["Attack_Heavy"];
                 currentActionFrame = 0;
                 rb.velocity = new Vector2(0, 0);
+                heavyAttackCount++;
             }
         }
         else
@@ -466,12 +497,14 @@ public class Character_Base : ClassScript
                 action = actionDict["Attack_Forward"];
                 currentActionFrame = 0;
                 rb.velocity = new Vector2(0, 0);
+                attackForwardCount++;
             }
             else
             {
                 action = actionDict["Attack_Heavy"];
                 currentActionFrame = 0;
                 rb.velocity = new Vector2(0, 0);
+                heavyAttackCount++;
             }
         }
     }
@@ -511,6 +544,10 @@ public class Character_Base : ClassScript
                 hitPoints -= damage;
                 healthbarController.SetHealth(hitPoints);
                 hitStuntState = special;
+                if (!isGrounded)
+                {
+                    attackedOnAirCount++;
+                }
             }
             else
             {
@@ -520,6 +557,10 @@ public class Character_Base : ClassScript
                 hitPoints -= damage / 5;
                 healthbarController.SetHealth(hitPoints);
                 hitStuntState = special;
+            }
+            if (state == State.Guard && special == 2)
+            {
+                grabbedOnGuardCount++;
             }
         }
     }
@@ -552,6 +593,7 @@ public class Character_Base : ClassScript
             else if (hitStuntState == 1)
             {
                 stateGotChanged = ChangeAnimationState(State.Knocked);
+                rb.velocity = new Vector2(0, 0);
                 iFrame = 10;
                 return;
             }

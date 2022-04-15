@@ -10,12 +10,27 @@ public static class SaveSystem
         BinaryFormatter formatter = new BinaryFormatter();
 
         string path = Application.persistentDataPath + "/player.bin";
+        
+
+        PlayerStats new_match = new PlayerStats(character_Base);
+
+        if (File.Exists(path))
+        {
+            Debug.Log("Append to old file");
+            PlayerStats old_match = LoadPlayer();
+            new_match.matchesData.ForEach(match => {
+                old_match.matchesData.Add(match);
+            });
+            new_match = old_match;
+        }
+        else
+        {
+            Debug.Log("Create new file");
+            
+        }
+
         FileStream stream = new FileStream(path, FileMode.Create);
-
-        PlayerStats data = new PlayerStats(character_Base);
-        Debug.Log(data.hitCount);
-
-        formatter.Serialize(stream, data);
+        formatter.Serialize(stream, new_match);
         stream.Close();
     }
 
