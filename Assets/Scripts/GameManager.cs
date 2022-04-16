@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        UpdateGameState(GameState.SelectCharacter);
+        UpdateGameState(GameState.Countdown);
     }
 
     public void UpdateGameState(GameState newState)
@@ -29,9 +29,6 @@ public class GameManager : MonoBehaviour
 
         switch (newState)
         {
-            case GameState.SelectCharacter:
-                HandleSelectCharacter();
-                break;
             case GameState.Countdown:
                 HandleCountdown();
                 break;
@@ -46,10 +43,6 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(newState);
     }
 
-    public void HandleSelectCharacter()
-    {
-        selectCharacterMenu.SetActive(true);
-    }
     public void HandleCountdown()
     {
         countdown.SetActive(true);
@@ -63,7 +56,6 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
-        SelectCharacter,
         Countdown,
         Play,
         Endscreen

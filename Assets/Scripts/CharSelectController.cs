@@ -64,6 +64,22 @@ public class CharSelectController : MonoBehaviour
         }
     }
 
+    public void ConfirmCharacter()
+    {
+        if (GameManagement.mode == "play")
+        {
+            SceneManager.LoadScene("DifficultySelectionScene");
+        }
+        else if (GameManagement.mode == "training")
+        {
+            SceneManager.LoadScene("TrainingScene");
+        }
+        else if (GameManagement.mode == "practice")
+        {
+            SceneManager.LoadScene("PracticeScene");
+        }
+    }
+
     public void LoadMenu()
     {
         SceneManager.LoadScene("HomeScreen");

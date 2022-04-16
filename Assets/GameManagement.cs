@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManagement : MonoBehaviour
 {
     public static GameManagement manager;
-    string mode;
+    public static string mode;
 
     private void Awake()
     {
@@ -44,11 +44,7 @@ public class GameManagement : MonoBehaviour
         }
         SceneManager.LoadScene(scene);
     }
-    public void LoadCharacterSelectionScene(string newMode)
-    {
-        mode = newMode;
-        SceneManager.LoadScene("CharacterSelectionScene");
-    }
+    
     public void ConfirmCharacter()
     {
         if (mode == "play")
