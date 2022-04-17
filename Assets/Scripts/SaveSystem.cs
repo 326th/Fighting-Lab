@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
-    public static void SavePlayer (Character_Base character_Base)
+    public static void SavePlayer (Character_Base character_Base, float playTime)
     {
         Debug.Log("saving...");
         BinaryFormatter formatter = new BinaryFormatter();
@@ -12,7 +12,7 @@ public static class SaveSystem
         string path = Application.persistentDataPath + "/player.bin";
         
 
-        PlayerStats new_match = new PlayerStats(character_Base);
+        PlayerStats new_match = new PlayerStats(character_Base, playTime);
 
         if (File.Exists(path))
         {

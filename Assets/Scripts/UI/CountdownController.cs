@@ -29,5 +29,7 @@ public class CountdownController : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         countdownDisplay.gameObject.SetActive(false);
+
+        GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
     }
 }

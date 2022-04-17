@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Character_Base : ClassScript
 {
-    [SerializeField] private float hitPoints = 100;
+    [SerializeField] public float hitPoints = 100;
 
     //Facing Handler
     [SerializeField] private FacingController facingController;
@@ -75,24 +75,24 @@ public class Character_Base : ClassScript
     //}
 
     //Stats
-    public int attackCount;
-    public int hitCount;
-    public int comboCount;
-    public int lightAttackCount;
-    public int heavyAttackCount;
-    public int attackForwardCount;
-    public int airLightAttackCount;
-    public int airHeavyAttackCount;
-    public int crouchLightAttackCount;
-    public int crouchHeavyAttackCount;
-    public int jumpCount;
-    public int grabCount;
-    public int guardCount;
-    public int crouchGuardCount;
-    public int moveForwardCount;
-    public int moveBackwardCount;
-    public int attackedOnAirCount;
-    public int grabbedOnGuardCount;
+    public float attackCount;
+    public float hitCount;
+    public float comboCount;
+    public float lightAttackCount;
+    public float heavyAttackCount;
+    public float attackForwardCount;
+    public float airLightAttackCount;
+    public float airHeavyAttackCount;
+    public float crouchLightAttackCount;
+    public float crouchHeavyAttackCount;
+    public float jumpCount;
+    public float grabCount;
+    public float guardCount;
+    public float crouchGuardCount;
+    public float moveForwardCount;
+    public float moveBackwardCount;
+    public float attackedOnAirCount;
+    public float grabbedOnGuardCount;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -135,6 +135,7 @@ public class Character_Base : ClassScript
                     connected = false;
                     HeavyAttack();
                     comboCount++;
+                    attackCount++;
 
                     SetAnimation();
                 }
@@ -150,6 +151,7 @@ public class Character_Base : ClassScript
                     currentActionFrame = 0;
                     rb.velocity = new Vector2(0, 0);
                     comboCount++;
+                    attackCount++;
 
                     SetAnimation();
                 }
@@ -675,8 +677,8 @@ public class Character_Base : ClassScript
         }
     }
 
-    public void SavePlayer()
+    public void SavePlayer(float playTime)
     {
-        SaveSystem.SavePlayer(this);
+        SaveSystem.SavePlayer(this, playTime);
     }
 }

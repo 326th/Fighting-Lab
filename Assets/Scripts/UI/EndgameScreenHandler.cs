@@ -14,25 +14,28 @@ public class EndgameScreenHandler : MonoBehaviour
     public TextMeshProUGUI missText;
     public Transform strengths_list;
     public Transform weaknesses_list;
+    public WindowGraph windowGraph;
 
-    private int attackCount;
-    private int hitCount;
-    private int comboCount;
-    private int lightAttackCount;
-    private int heavyAttackCount;
-    private int attackForwardCount;
-    private int airLightAttackCount;
-    private int airHeavyAttackCount;
-    private int crouchLightAttackCount;
-    private int crouchHeavyAttackCount;
-    private int jumpCount;
-    private int grabCount;
-    private int guardCount;
-    private int crouchGuardCount;
-    private int moveForwardCount;
-    private int moveBackwardCount;
-    private int attackedOnAirCount;
-    private int grabbedOnGuardCount;
+    private float attackCount;
+    private float hitCount;
+    private float comboCount;
+    private float lightAttackCount;
+    private float heavyAttackCount;
+    private float attackForwardCount;
+    private float airLightAttackCount;
+    private float airHeavyAttackCount;
+    private float crouchLightAttackCount;
+    private float crouchHeavyAttackCount;
+    private float jumpCount;
+    private float grabCount;
+    private float guardCount;
+    private float crouchGuardCount;
+    private float moveForwardCount;
+    private float moveBackwardCount;
+    private float attackedOnAirCount;
+    private float grabbedOnGuardCount;
+    private float hitPoints;
+    private float playTime;
 
     private int minCombo = 2;
     private int maxCombo = 5;
@@ -42,11 +45,18 @@ public class EndgameScreenHandler : MonoBehaviour
     private int heavyAttackThreshold = 25;
     private int fewMoveThreshold = 5;
     private int fewGrabThreshold = 2;
+    private int maxHP = 70;
+    private int fastTime = 40;
 
     void Start()
     {
+        
+    }
+
+    public void LoadLatestMatch()
+    {
         PlayerStats matches = SaveSystem.LoadPlayer();
-        List<int> lastestMatch = matches.matchesData.Last();
+        List<float> lastestMatch = matches.matchesData.Last();
 
         attackCount = lastestMatch[0];
         hitCount = lastestMatch[1];
@@ -66,16 +76,23 @@ public class EndgameScreenHandler : MonoBehaviour
         moveBackwardCount = lastestMatch[15];
         attackedOnAirCount = lastestMatch[16];
         grabbedOnGuardCount = lastestMatch[17];
+        hitPoints = lastestMatch[18];
+        playTime = lastestMatch[19];
     }
 
     public void UpdateText()
     {
-        
+        print("Updating text...");
+
+        LoadLatestMatch();
+
+        // Load Graph
+        windowGraph.LoadGraph();
 
         // Calculate hitrate
         if (attackCount != 0) // Attack count != 0
         {
-            hitRate = (float) hitCount / (float) attackCount;
+            hitRate = hitCount / attackCount;
             hitRate = hitRate * 100;
         }
 
@@ -84,11 +101,14 @@ public class EndgameScreenHandler : MonoBehaviour
         hitText.text = hitCount.ToString();
         missText.text = (attackCount - hitCount).ToString();
 
+        //Update playTime
+        timeText.text = playTime.ToString() + "s";
+
         CheckStrengths();
         CheckWeaknesses();
         //AddStrength("Youre a god", "Youre too good!!!");
         //AddWeakness("Noob", "Try harder!!!");
-        AddWeakness("Heavy Attacker", "You use too many big scale attack E.g.HeavyAttack, AirHeavyAttack, CrouchHeavyAttack, and AttackForward. Enemy can block and counter attack you. Becareful!");
+        //AddWeakness("Heavy Attacker", "You use too many big scale attack E.g.HeavyAttack, AirHeavyAttack, CrouchHeavyAttack, and AttackForward. Enemy can block and counter attack you. Becareful!");
 
 
 
@@ -138,6 +158,14 @@ public class EndgameScreenHandler : MonoBehaviour
         if (comboCount >= maxCombo)
         {
             AddStrength("Combo Master!", "You are just too good at making combo!!");
+        }
+        if (hitPoints >= maxHP)
+        {
+            AddStrength("Dominating!", "You have remaining HP more than 70%");
+        }
+        if (playTime <= fastTime)
+        {
+            AddStrength("Quick Victory!", "You end game faster that 30s");
         }
     }
 

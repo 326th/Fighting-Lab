@@ -24,10 +24,15 @@ public class WindowGraph : MonoBehaviour
         dashTemplateX = graphContainer.Find("dashTemplateX").GetComponent<RectTransform>();
         dashTemplateY = graphContainer.Find("dashTemplateY").GetComponent<RectTransform>();
 
+        
+    }
+
+    public void LoadGraph()
+    {
         List<float> valueList = new List<float>();
         PlayerStats matches = SaveSystem.LoadPlayer();
         int nodeNumber = 9;
-        foreach (List<int> match in matches.matchesData.Skip(Math.Max(0, matches.matchesData.Count() - nodeNumber)))
+        foreach (List<float> match in matches.matchesData.Skip(Math.Max(0, matches.matchesData.Count() - nodeNumber)))
         {
             if (match[0] != 0)
             {
